@@ -36,15 +36,22 @@ pipeline{
 				}
             }
 
+			stage('ver carpetas'){
+				steps{
+					echo 'revisando estructura de carpetas'
+					sh 'ls -la /opt/Slave4/workspace/Ceiba-ADN'
+				}
+			}
 
-			 stage('Sonar Analysis'){
-			 	steps{
-			 		echo '------------>Analisis de código estático<------------'
-			 		  withSonarQubeEnv('Sonar') {
-                         sh "${tool name: 'SonarScanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'}/bin/sonar-scanner -Dsonar.projectKey=co.com.Ceiba:BicicletasUrbanas.jose.vallejo.master -Dsonar.projectName=Ceiba-BicicletasUrbanas(jose.vallejo) -Dproject.settings=./sonar-project.properties"
-                      }
-			 	}
-			 }
+
+			stage('Sonar Analysis'){
+			steps{
+				echo '------------>Analisis de código estático<------------'
+					withSonarQubeEnv('Sonar') {
+						sh "${tool name: 'SonarScanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'}/bin/sonar-scanner -Dsonar.projectKey=co.com.Ceiba:BicicletasUrbanas.jose.vallejo -Dsonar.projectName=Ceiba-BicicletasUrbanas(jose.vallejo)/ -Dproject.settings=./sonar-project.properties"
+					}
+			}
+			}
 
 
 
