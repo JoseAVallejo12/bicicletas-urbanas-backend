@@ -1,0 +1,30 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "ceiba_ADN_root",
+            "database": "bicicletas_db",
+            "username": "root",
+            "password": "admin"
+        },
+        {
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "ceiba_ADN_ceiba",
+            "database": "bicicletas_db",
+            "username": "ceiba",
+            "password": "ceiba"
+        }
+    ]
+}
