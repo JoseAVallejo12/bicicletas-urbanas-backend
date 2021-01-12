@@ -1,4 +1,5 @@
 import { ConfigService } from '@nestjs/config';
+import { DefaultDeserializer } from 'v8';
 import { EnvVariables } from './environment/env-variables.enum';
 
 export const databaseConfigFactory = (configService: ConfigService) => ({

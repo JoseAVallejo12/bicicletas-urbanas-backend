@@ -8,10 +8,10 @@
             "server": "localhost",
             "port": 3306,
             "driver": "MySQL",
-            "name": "ceiba_ADN_root",
+            "name": "ceiba_ADN_ceiba",
             "database": "bicicletas_db",
-            "username": "root",
-            "password": "admin"
+            "username": "ceiba",
+            "password": "ceiba"
         },
         {
             "mysqlOptions": {
@@ -21,13 +21,14 @@
             "server": "localhost",
             "port": 3306,
             "driver": "MySQL",
-            "name": "ceiba_ADN_ceiba",
+            "name": "ceiba_ADN_root",
             "database": "bicicletas_db",
-            "username": "ceiba",
-            "password": "ceiba"
+            "username": "root",
+            "password": "admin",
+            "connectionTimeout": 5
         }
     ],
     "sonarlint.connectedMode.project": {
-        "projectKey": "bicicletas-urbanas"
+        "projectKey": "co.com.Ceiba:BicicletasUrbanas.jose.vallejo.master"
     }
 }
