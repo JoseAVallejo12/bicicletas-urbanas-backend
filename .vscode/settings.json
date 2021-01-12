@@ -26,5 +26,8 @@
             "username": "ceiba",
             "password": "ceiba"
         }
-    ]
+    ],
+    "sonarlint.connectedMode.project": {
+        "projectKey": "bicicletas-urbanas"
+    }
 }
