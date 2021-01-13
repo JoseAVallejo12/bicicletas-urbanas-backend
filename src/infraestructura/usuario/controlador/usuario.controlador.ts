@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ComandoRegistrarUsuario } from 'src/aplicacion/usuario/comando/registrar-usuario.comando';
 import { ManejadorRegistrarUsuario } from 'src/aplicacion/usuario/comando/registar-usuario.manejador';
 import { ManejadorListarUsuario } from 'src/aplicacion/usuario/consulta/listar-usuarios.manejador';
@@ -20,5 +20,10 @@ export class UsuarioControlador {
   @Get()
   async listar(): Promise<UsuarioDto[]> {
     return this._manejadorListarUsuario.ejecutar();
+  }
+
+  @Get(':id')
+  async listarUno(@Param('id') id: string): Promise<UsuarioDto> {
+    return this._manejadorListarUsuario.ejecutarUno(id);
   }
 }

@@ -16,4 +16,9 @@ export class DaoUsuarioMysql implements DaoUsuario {
       'SELECT * FROM usuario',
     );
   }
+
+  async listarUno(id: string): Promise<UsuarioDto> {
+    const queryString = `SELECT * FROM usuario WHERE usuario.id=${id}`;
+    return this.entityManager.query(queryString);
+  }
 }
