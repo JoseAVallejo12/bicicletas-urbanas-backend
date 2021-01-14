@@ -9,6 +9,16 @@ describe('ServicioRegistrarUsuario', () => {
 
   let servicioRegistrarUsuario: ServicioRegistrarUsuario;
   let repositorioUsuarioStub: SinonStubbedInstance<RepositorioUsuario>;
+  const userData = {
+    nombre: 'Carlos',
+    apellido: 'Perez',
+    clave: '47il78',
+    fechaCreacion: new Date().toISOString(),
+    cedula: '39845645',
+    correo: 'test@test.com.co',
+    telefono: '320 894 5769',
+    direccion: 'calle 45 #23 -56'
+  };
 
   beforeEach(() => {
 
@@ -22,13 +32,13 @@ describe('ServicioRegistrarUsuario', () => {
 
     await expect(
       servicioRegistrarUsuario.ejecutar(
-        new Usuario('juan', '1234', new Date().toISOString()),
+        new Usuario(userData),
       ),
-    ).rejects.toThrow('El nombre de usuario juan ya existe');
+    ).rejects.toThrow('El nombre de usuario Carlos ya existe');
   });
 
   it('si el nombre no existe guarda el usuario el repositorio', async () => {
-    const usuario = new Usuario('juan', '1234', new Date().toISOString());
+    const usuario = new Usuario(userData);
     repositorioUsuarioStub.existeNombreUsuario.returns(Promise.resolve(false));
 
     await servicioRegistrarUsuario.ejecutar(usuario);

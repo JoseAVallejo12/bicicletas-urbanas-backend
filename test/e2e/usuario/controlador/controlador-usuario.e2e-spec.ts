@@ -24,6 +24,16 @@ describe('Pruebas al controlador de usuarios', () => {
   let app: INestApplication;
   let repositorioUsuario: SinonStubbedInstance<RepositorioUsuario>;
   let daoUsuario: SinonStubbedInstance<DaoUsuario>;
+  const userData = {
+    nombre: 'Carlos',
+    apellido: 'Perez',
+    clave: '47il78',
+    fechaCreacion: new Date().toISOString(),
+    cedula: '39845645',
+    correo: 'test@test.com.co',
+    telefono: '320 894 5769',
+    direccion: 'calle 45 #23 -56'
+  };
 
   /**
    * No Inyectar los módulos completos (Se trae TypeORM y genera lentitud al levantar la prueba, traer una por una las dependencias)
@@ -64,7 +74,7 @@ describe('Pruebas al controlador de usuarios', () => {
 
   it('debería listar los usuarios registrados', () => {
 
-    const usuarios: any[] = [{ nombre: 'Lorem ipsum', fechaCreacion: (new Date().toISOString()) }];
+    const usuarios: any[] = [userData];
     daoUsuario.listar.returns(Promise.resolve(usuarios));
 
     return request(app.getHttpServer())
@@ -73,27 +83,8 @@ describe('Pruebas al controlador de usuarios', () => {
       .expect(usuarios);
   });
 
-  it('debería fallar al registar un usuario clave muy corta', async () => {
-    const usuario: ComandoRegistrarUsuario = {
-      nombre: 'Lorem ipsum',
-      fechaCreacion: (new Date()).toISOString(),
-      clave: '123',
-    };
-    const mensaje = 'El tamaño mínimo de la clave debe ser 4';
-
-    const response = await request(app.getHttpServer())
-      .post('/usuarios').send(usuario)
-      .expect(HttpStatus.BAD_REQUEST);
-    expect(response.body.message).toBe(mensaje);
-    expect(response.body.statusCode).toBe(HttpStatus.BAD_REQUEST);
-  });
-
   it('debería fallar al registar un usuario ya existente', async () => {
-    const usuario: ComandoRegistrarUsuario = {
-      nombre: 'Lorem ipsum',
-      fechaCreacion: (new Date()).toISOString(),
-      clave: '1234',
-    };
+    const usuario: ComandoRegistrarUsuario = userData;
     const mensaje = `El nombre de usuario ${usuario.nombre} ya existe`;
     repositorioUsuario.existeNombreUsuario.returns(Promise.resolve(true));
 
