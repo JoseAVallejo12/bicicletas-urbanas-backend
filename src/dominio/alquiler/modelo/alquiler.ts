@@ -3,19 +3,19 @@ import { AlquilerDto } from '../../../aplicacion/alquiler/consulta/dto/alquiler.
 const CIUDADES_DISPONIBLES = ['barranquilla'];
 
 export class Alquiler {
-  readonly #idUsuario: number;
-  readonly #idBicicleta: number;
+  readonly #cedulaUsuario: string;
+  readonly #serialBicicleta: string;
   readonly #fechaAlquiler: Date;
   readonly #ciudad: string;
-  readonly #estado: string;
+  readonly #estado: boolean;
 
 
   constructor(alquilerDto: AlquilerDto) {
     this.validarCiudad(alquilerDto.ciudad);
     this.#fechaAlquiler = new Date(alquilerDto.fechaAlquiler);
     this.validarFecha(this.fechaAlquiler);
-    this.#idBicicleta = alquilerDto.idBicicleta;
-    this.#idUsuario = alquilerDto.idUsusario;
+    this.#serialBicicleta = alquilerDto.serialBicicleta;
+    this.#cedulaUsuario = alquilerDto.cedulaUsuario;
     this.#ciudad = alquilerDto.ciudad;
     this.#estado = alquilerDto.estado;
   }
@@ -37,12 +37,12 @@ export class Alquiler {
   }
 
 
-  get idUsuario(): number {
-    return this.#idUsuario;
+  get cedulaUsuario(): string {
+    return this.#cedulaUsuario;
   }
 
-  get idBicicleta(): number {
-    return this.#idBicicleta;
+  get serialBicicleta(): string {
+    return this.#serialBicicleta;
   }
 
   get fechaAlquiler(): Date {
@@ -53,7 +53,7 @@ export class Alquiler {
     return this.#ciudad;
   }
 
-  get estado(): string {
+  get estado(): boolean {
     return this.#estado;
   }
 }

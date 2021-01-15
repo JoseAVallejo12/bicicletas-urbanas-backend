@@ -2,6 +2,7 @@ import { RepositorioUsuario } from '../puerto/repositorio/repositorio-usuario';
 import { Usuario } from '../modelo/usuario';
 import { ErrorDeNegocio } from 'src/dominio/errores/error-de-negocio';
 
+
 export class ServicioRegistrarUsuario {
 
   constructor(private readonly _repositorioUsuario: RepositorioUsuario) {
@@ -13,6 +14,5 @@ export class ServicioRegistrarUsuario {
         `El nombre de usuario ${usuario.nombre} ya existe`,
       );
     }
-    await this._repositorioUsuario.guardar(usuario);
   }
 }
