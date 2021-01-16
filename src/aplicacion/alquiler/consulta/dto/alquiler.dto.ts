@@ -1,5 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 
+/**
+ * Esquema de datos para tranferir mensaje entre capas
+ * para Alquiler
+ */
 export class AlquilerDto {
 
   @ApiProperty({ example: 1 })

@@ -9,10 +9,11 @@ export class ServicioRegistrarUsuario {
   }
 
   async ejecutar(usuario: Usuario) {
-    if (await this._repositorioUsuario.existeNombreUsuario(usuario.nombre)) {
+    if (await this._repositorioUsuario.existeCedulaUsuario(usuario.cedula)) {
       throw new ErrorDeNegocio(
-        `El nombre de usuario ${usuario.nombre} ya existe`,
+        `El Usuario con cedula numero: ${usuario.cedula} ya existe`,
       );
     }
+    this._repositorioUsuario.guardar(usuario);
   }
 }

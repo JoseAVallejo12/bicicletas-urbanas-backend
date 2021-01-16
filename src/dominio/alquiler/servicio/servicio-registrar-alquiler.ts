@@ -1,5 +1,5 @@
-import { RepositorioBicicleta } from 'src/dominio/bicicletas/puerto/repositorio/repositorio-bicicleta';
-import { RepositorioUsuario } from 'src/dominio/usuario/puerto/repositorio/repositorio-usuario';
+import { ErrorUsusarioAlquiler } from 'src/dominio/errores/error-usuario-alquiler';
+import { ErrorIdAlquilerDuplicado } from 'src/dominio/errores/error-id-alquiler';
 import { Alquiler } from '../modelo/alquiler';
 import { RepositorioAlquiler } from '../puerto/repositorio/repositorio-alquiler';
 
@@ -10,17 +10,19 @@ export class ServicioRegistraAlquiler {
    */
   constructor(private repositorioAlquiler: RepositorioAlquiler) {}
 
-    async actualizarEstado(estado: string, id: string) {
+    async actualizarEstado(estado: boolean, id: string) {
       if (this.repositorioAlquiler.existeIdAlquiler(id)){
-        throw new Error(`Alquiler Id: ${id} no encontrado`);
+        throw new ErrorIdAlquilerDuplicado(`Alquiler Id: ${id} no encontrado`);
       } else {
-        this.repositorioAlquiler.actualizarEstado(estado);
+        this.repositorioAlquiler.actualizarEstado(estado, id);
       }
     }
 
     async guardar(alquiler: Alquiler) {
-      if (this.repositorioAlquiler.existeCedulaUsuario(alquiler.cedulaUsuario)){
-        throw new Error(`Usuario con Cedula: ${alquiler.cedulaUsuario} ya tiene una bicicleta asignada`);
+      if (await this.repositorioAlquiler.existeCedulaUsuario(alquiler.cedulaUsuario)){
+        throw new ErrorUsusarioAlquiler(
+          `Usuario con Cedula: ${alquiler.cedulaUsuario} ya tiene una bicicleta asignada`
+          );
       } else {
         this.repositorioAlquiler.guardar(alquiler);
       }

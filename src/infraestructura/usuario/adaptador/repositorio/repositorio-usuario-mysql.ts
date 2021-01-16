@@ -12,7 +12,7 @@ export class RepositorioUsuarioMysql implements RepositorioUsuario {
     private readonly repositorio: Repository<UsuarioEntidad>,
   ) {}
 
-  async existeNombreUsuario(nombre: string): Promise<boolean> {
+  async existeCedulaUsuario(nombre: string): Promise<boolean> {
     return (await this.repositorio.count({ nombre })) > 0;
   }
 

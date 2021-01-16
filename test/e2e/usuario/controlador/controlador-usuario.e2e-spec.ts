@@ -29,7 +29,7 @@ describe('Pruebas al controlador de usuarios', () => {
     apellido: 'Perez',
     clave: '47il78',
     fechaCreacion: new Date().toISOString(),
-    cedula: '39845645',
+    cedula: '72300200',
     correo: 'test@test.com.co',
     telefono: '320 894 5769',
     direccion: 'calle 45 #23 -56'
@@ -39,7 +39,7 @@ describe('Pruebas al controlador de usuarios', () => {
    * No Inyectar los módulos completos (Se trae TypeORM y genera lentitud al levantar la prueba, traer una por una las dependencias)
    **/
   beforeAll(async () => {
-    repositorioUsuario = createStubObj<RepositorioUsuario>(['existeNombreUsuario', 'guardar'], sinonSandbox);
+    repositorioUsuario = createStubObj<RepositorioUsuario>(['existeCedulaUsuario', 'guardar'], sinonSandbox);
     daoUsuario = createStubObj<DaoUsuario>(['listar'], sinonSandbox);
     const moduleRef = await Test.createTestingModule({
       controllers: [UsuarioControlador],
@@ -85,8 +85,8 @@ describe('Pruebas al controlador de usuarios', () => {
 
   it('debería fallar al registar un usuario ya existente', async () => {
     const usuario: ComandoRegistrarUsuario = userData;
-    const mensaje = `El nombre de usuario ${usuario.nombre} ya existe`;
-    repositorioUsuario.existeNombreUsuario.returns(Promise.resolve(true));
+    const mensaje = `El Usuario con cedula numero: ${userData.cedula} ya existe`;
+    repositorioUsuario.existeCedulaUsuario.returns(Promise.resolve(true));
 
     const response = await request(app.getHttpServer())
       .post('/usuarios').send(usuario)

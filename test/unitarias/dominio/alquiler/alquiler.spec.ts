@@ -7,10 +7,10 @@ describe('Alquiler', () => {
 
   beforeEach(() =>{
     alquilerData = {
-      idUsusario: 3,
-      idBicicleta: 8,
+      cedulaUsuario: '43343567',
+      serialBicicleta: '3KJ2H435',
       ciudad: 'barranquilla',
-      estado: 'abierto',
+      estado: true,
       fechaAlquiler: '2020-09-20 20:57:07'
     };
     return alquilerData;
@@ -22,7 +22,7 @@ describe('Alquiler', () => {
     expect(alquiler.ciudad).toEqual('barranquilla');
     expect(alquiler.fechaAlquiler.toTimeString().slice(0, corteString))
       .toEqual(alquilerData.fechaAlquiler.split(' ')[1]);
-    expect(alquiler.idUsuario).toBe(alquilerData.idUsusario);
+    expect(alquiler.cedulaUsuario).toBe(alquilerData.cedulaUsuario);
   });
 
   it('Crear alquiler ciudad no habiliatda', () => {

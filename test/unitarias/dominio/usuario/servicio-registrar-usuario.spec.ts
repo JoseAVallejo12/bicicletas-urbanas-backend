@@ -3,43 +3,48 @@ import { Usuario } from 'src/dominio/usuario/modelo/usuario';
 import { RepositorioUsuario } from 'src/dominio/usuario/puerto/repositorio/repositorio-usuario';
 import { SinonStubbedInstance } from 'sinon';
 import { createStubObj } from '../../../util/create-object.stub';
+import { UsuarioDto } from 'src/aplicacion/usuario/consulta/dto/usuario.dto';
 
 
 describe('ServicioRegistrarUsuario', () => {
 
   let servicioRegistrarUsuario: ServicioRegistrarUsuario;
   let repositorioUsuarioStub: SinonStubbedInstance<RepositorioUsuario>;
-  const userData = {
-    nombre: 'Carlos',
-    apellido: 'Perez',
-    clave: '47il78',
-    fechaCreacion: new Date().toISOString(),
-    cedula: '39845645',
-    correo: 'test@test.com.co',
-    telefono: '320 894 5769',
-    direccion: 'calle 45 #23 -56'
-  };
+  let userData: UsuarioDto;
 
   beforeEach(() => {
-
-    repositorioUsuarioStub = createStubObj<RepositorioUsuario>(['existeNombreUsuario', 'guardar']);
+    repositorioUsuarioStub = createStubObj<RepositorioUsuario>(['existeCedulaUsuario', 'guardar']);
     servicioRegistrarUsuario = new ServicioRegistrarUsuario(repositorioUsuarioStub);
+    const minNumCc = 72289920;
+    const maxNumCc = 79900399;
+
+    userData = {
+      nombre: 'Carlos',
+      apellido: 'Perez',
+      clave: '47il78',
+      fechaCreacion: new Date().toISOString(),
+      cedula: (Math.floor(Math.random() * (maxNumCc - minNumCc + 1)) + minNumCc).toString(),
+      correo: 'test@test.com.co',
+      telefono: '320 894 5769',
+      direccion: 'calle 45 #23 -56'
+    };
+    return userData;
   });
 
   it('si el nombre de usuario ya existe no se puede crear y deberia retonar error', async () => {
 
-    repositorioUsuarioStub.existeNombreUsuario.returns(Promise.resolve(true));
+    repositorioUsuarioStub.existeCedulaUsuario.returns(Promise.resolve(true));
 
     await expect(
       servicioRegistrarUsuario.ejecutar(
         new Usuario(userData),
       ),
-    ).rejects.toThrow('El nombre de usuario Carlos ya existe');
+    ).rejects.toThrow(`El Usuario con cedula numero: ${userData.cedula} ya existe`);
   });
 
-  it('si el nombre no existe guarda el usuario el repositorio', async () => {
+  it('si la cedula no existe, guarda el usuario', async () => {
     const usuario = new Usuario(userData);
-    repositorioUsuarioStub.existeNombreUsuario.returns(Promise.resolve(false));
+    repositorioUsuarioStub.existeCedulaUsuario.returns(Promise.resolve(false));
 
     await servicioRegistrarUsuario.ejecutar(usuario);
 

@@ -1,3 +1,5 @@
+import { ErrorCiudadNoDisponible } from 'src/dominio/errores/error-ciudad-no-disponible';
+import { ErrorHorarioNoPermitido } from 'src/dominio/errores/error-horario-no-permitido';
 import { AlquilerDto } from '../../../aplicacion/alquiler/consulta/dto/alquiler.dto';
 
 const CIUDADES_DISPONIBLES = ['barranquilla'];
@@ -22,7 +24,7 @@ export class Alquiler {
 
   private validarCiudad(ciudad: string) {
     if (!CIUDADES_DISPONIBLES.some((value) => value === ciudad)){
-      throw new Error('Ciudad No Disponible por el momento');
+      throw new ErrorCiudadNoDisponible('Ciudad No Disponible por el momento');
     }
   }
 
@@ -32,7 +34,7 @@ export class Alquiler {
     const corteString = 2;
     const hora = parseInt(fecha.toTimeString().slice(0, corteString), 10);
     if (hora < horaIn || hora >= horaOut) {
-      throw new Error('Horario fuera de rango: 7 to 22 horas');
+      throw new ErrorHorarioNoPermitido('Horario fuera de rango: 7 to 22 horas');
     }
   }
 
