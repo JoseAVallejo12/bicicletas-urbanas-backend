@@ -30,5 +30,6 @@
     ],
     "sonarlint.connectedMode.project": {
         "projectKey": "co.com.Ceiba:BicicletasUrbanas.jose.vallejo.master"
-    }
+    },
+    "editor.fontSize": 15
 }
