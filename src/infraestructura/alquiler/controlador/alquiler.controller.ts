@@ -1,4 +1,6 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { ComandoFacturarAlquiler } from 'src/aplicacion/alquiler/comando/facturar-alquiler.comando';
+import { ManejadorFacturarAlquiler } from 'src/aplicacion/alquiler/comando/facturar-alquiler.manejador';
 import { ComandoRegistrarAlquiler } from 'src/aplicacion/alquiler/comando/registrar-alquiler.comando';
 import { ManejadorRegistrarAlquiler } from 'src/aplicacion/alquiler/comando/registrar-alquiler.manejador';
 import { AlquilerDto } from 'src/aplicacion/alquiler/consulta/dto/alquiler.dto';
@@ -8,7 +10,8 @@ import { ManejadorListarAlquiler } from 'src/aplicacion/alquiler/consulta/listar
 export class AlquilerControlador {
   constructor(
     private manejadorRegistrarAlquiler: ManejadorRegistrarAlquiler,
-    private manejadorListarAlquiler: ManejadorListarAlquiler
+    private manejadorListarAlquiler: ManejadorListarAlquiler,
+    private manejadorFacturarAlquiler: ManejadorFacturarAlquiler
   ) {}
 
   /**
@@ -47,6 +50,11 @@ export class AlquilerControlador {
   @Post()
   async registrarAlquiler(@Body() comandoRegistrarAlquiler: ComandoRegistrarAlquiler) {
     await this.manejadorRegistrarAlquiler.ejecutar(comandoRegistrarAlquiler);
+  }
+
+  @Put()
+  async facturarAlquiler(@Body() comandoFacturarAlquiler: ComandoFacturarAlquiler) {
+    await this.manejadorFacturarAlquiler.ejecutar(comandoFacturarAlquiler);
   }
 
 }

@@ -6,10 +6,10 @@ import { ApiProperty } from '@nestjs/swagger';
  */
 export class AlquilerDto {
 
-  @ApiProperty({ example: 1 })
+  @ApiProperty({ example: '78945678' })
   cedulaUsuario: string;
 
-  @ApiProperty({ example: 2 })
+  @ApiProperty({ example: 'HU173648' })
   serialBicicleta: string;
 
   @ApiProperty({ example: '2020-09-20 21:57:07' })

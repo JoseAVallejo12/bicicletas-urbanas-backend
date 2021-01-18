@@ -9,19 +9,25 @@ import { AlquilerEntidad } from '../entidad/alquiler.entidad';
 import { repositorioAlquilerProvedor } from './repositorio/repositorio-alquiler.proveedor';
 import { servicioRegistrarAlquilerProveedor } from './servicio/servicio-registrar-alquiler.proveedor';
 import { DaoAlquilerProvedor } from './dao/dao-alquiler.proveedor';
+import { ManejadorFacturarAlquiler } from 'src/aplicacion/alquiler/comando/facturar-alquiler.manejador';
+import { ServicioFacturarAlquiler } from 'src/dominio/alquiler/servicio/servicio-facturar-alquiler';
+import { servicioFacturarAlquilerProveedor } from './servicio/servicio-facturar-alquiler.proveedor';
 
 @Module({
   imports: [TypeOrmModule.forFeature([AlquilerEntidad])],
   providers: [
     { provide: ServicioRegistraAlquiler, inject: [RepositorioAlquiler], useFactory: servicioRegistrarAlquilerProveedor },
+    {provide: ServicioFacturarAlquiler, inject: [RepositorioAlquiler], useFactory: servicioFacturarAlquilerProveedor },
     repositorioAlquilerProvedor,
     ManejadorRegistrarAlquiler,
     ManejadorListarAlquiler,
+    ManejadorFacturarAlquiler,
     DaoAlquilerProvedor,
   ],
   exports: [
     ServicioRegistraAlquiler,
     ManejadorRegistrarAlquiler,
+    ManejadorFacturarAlquiler,
     RepositorioAlquiler,
     ManejadorListarAlquiler,
     DaoAlquiler

@@ -38,7 +38,6 @@ export class Alquiler {
     }
   }
 
-
   get cedulaUsuario(): string {
     return this.#cedulaUsuario;
   }

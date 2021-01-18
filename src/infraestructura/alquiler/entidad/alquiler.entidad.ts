@@ -19,4 +19,14 @@ export class AlquilerEntidad {
 
   @Column()
   estado: boolean;
+
+  @Column()
+  fechaEntrega: Date;
+
+  @Column()
+  horasTranscurridas: number;
+
+  @Column()
+  total: number;
+
 }
