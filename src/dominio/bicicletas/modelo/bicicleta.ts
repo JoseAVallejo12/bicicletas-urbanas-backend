@@ -1,4 +1,4 @@
-import { BicicletaDto } from 'src/aplicacion/bicicletas/dto/bicicletas.dto';
+import { BicicletaDto } from 'src/aplicacion/bicicletas/consulta/dto/bicicletas.dto';
 
 export class Bicicleta {
   readonly #marca: string;

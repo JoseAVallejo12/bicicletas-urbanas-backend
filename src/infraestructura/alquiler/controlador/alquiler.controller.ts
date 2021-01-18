@@ -25,7 +25,7 @@ export class AlquilerControlador {
 
   /**
    * busca un id especifico
-   * @param id numero unico para cada alquiler
+   * @param: id numero unico para cada alquiler
    * @returns: objeto tipo alquilerDto
    */
   @Get('listar/:id')
@@ -35,7 +35,7 @@ export class AlquilerControlador {
 
   /**
    * lista los alquileres abiertos "true" o cerrado "false"
-   * @param estado boolean false=0, true=1
+   * @param: estado boolean false=0, true=1
    * @returns: array de objetos alquilerDto
    */
   @Get('listar/estado/:estado')
@@ -45,7 +45,7 @@ export class AlquilerControlador {
 
   /**
    * crea un nuevo alquiler
-   * @param comandoRegistrarAlquiler estructura de datos para alquiler
+   * @param: commandoRegistrarAlquiler estructura de datos para alquiler
    */
   @Post()
   async registrarAlquiler(@Body() comandoRegistrarAlquiler: ComandoRegistrarAlquiler) {
