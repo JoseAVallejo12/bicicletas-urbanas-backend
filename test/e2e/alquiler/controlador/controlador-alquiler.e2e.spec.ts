@@ -12,8 +12,6 @@ import { ServicioRegistraAlquiler } from 'src/dominio/alquiler/servicio/servicio
 import { servicioRegistrarAlquilerProveedor } from 'src/infraestructura/alquiler/proveedor/servicio/servicio-registrar-alquiler.proveedor';
 import { ManejadorRegistrarAlquiler } from 'src/aplicacion/alquiler/comando/registrar-alquiler.manejador';
 import { ManejadorListarAlquiler } from 'src/aplicacion/alquiler/consulta/listart-alquiler.manejador';
-import { ComandoRegistrarAlquiler } from 'src/aplicacion/alquiler/comando/registrar-alquiler.comando';
-import { Alquiler } from 'src/dominio/alquiler/modelo/alquiler';
 import { ManejadorFacturarAlquiler } from 'src/aplicacion/alquiler/comando/facturar-alquiler.manejador';
 import { ServicioFacturarAlquiler } from 'src/dominio/alquiler/servicio/servicio-facturar-alquiler';
 import { servicioFacturarAlquilerProveedor } from 'src/infraestructura/alquiler/proveedor/servicio/servicio-facturar-alquiler.proveedor';
@@ -46,7 +44,8 @@ describe('Pruebas al controlador de alquiler', () => {
   };
 
   /**
-   * No Inyectar los módulos completos (Se trae TypeORM y genera lentitud al levantar la prueba, traer una por una las dependencias)
+   * No Inyectar los módulos completos (Se trae TypeORM y genera lentitud al
+   * levantar la prueba, traer una por una las dependencias)
    **/
   beforeAll(async () => {
     repositorioAlquiler = createStubObj<RepositorioAlquiler>([
