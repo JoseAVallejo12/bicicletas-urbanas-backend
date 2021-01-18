@@ -1,20 +1,25 @@
+import { UsuarioDto } from 'src/aplicacion/usuario/consulta/dto/usuario.dto';
 import { Usuario } from 'src/dominio/usuario/modelo/usuario';
-import { ErrorLongitudInvalida } from 'src/dominio/errores/error-longitud-invalida';
 
 describe('Usuario', () => {
 
-  const _Usuario = Usuario as any;
+  const _Usuario = Usuario;
 
-  it('usuario con clave menor que 4 debería retornar error', () => {
-    return expect(async () => new _Usuario('juan', '12', new Date().toISOString()))
-      .rejects
-      .toStrictEqual(new ErrorLongitudInvalida('El tamaño mínimo de la clave debe ser 4'));
-  });
+  it('Crear un Nuevo usuario', () => {
+    const userData: UsuarioDto = {
+      nombre: 'Carlos',
+      apellido: 'Perez',
+      clave: '47il78',
+      fechaCreacion: new Date().toISOString(),
+      cedula: '39845645',
+      correo: 'test@test.com.co',
+      telefono: '320 894 5769',
+      direccion: 'calle 45 #23 -56'
+    };
 
-  it('usuario con clave igual a 4 debería crear bien', () => {
-    const usuario = new _Usuario('juan', '4123', new Date().toISOString());
+    const usuario = new _Usuario(userData);
 
-    expect(usuario.nombre).toEqual('juan');
-    expect(usuario.clave).toEqual('4123');
+    expect(usuario.nombre).toEqual('Carlos');
+    expect(usuario.clave).toEqual('47il78');
   });
 });

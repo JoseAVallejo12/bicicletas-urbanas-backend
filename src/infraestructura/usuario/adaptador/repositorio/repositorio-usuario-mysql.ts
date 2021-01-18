@@ -12,15 +12,20 @@ export class RepositorioUsuarioMysql implements RepositorioUsuario {
     private readonly repositorio: Repository<UsuarioEntidad>,
   ) {}
 
-  async existeNombreUsuario(nombre: string): Promise<boolean> {
+  async existeCedulaUsuario(nombre: string): Promise<boolean> {
     return (await this.repositorio.count({ nombre })) > 0;
   }
 
   async guardar(usuario: Usuario) {
     const entidad = new UsuarioEntidad();
+    entidad.nombre = usuario.nombre;
+    entidad.apellido = usuario.apellido;
     entidad.clave = usuario.clave;
     entidad.fechaCreacion = usuario.fechaCreacion;
-    entidad.nombre = usuario.nombre;
+    entidad.cedula = usuario.cedula;
+    entidad.correo = usuario.correo;
+    entidad.telefono = usuario.telefono;
+    entidad.direccion = usuario.direccion;
     await this.repositorio.save(entidad);
   }
 }
