@@ -22,4 +22,10 @@ export class BicicletaEntidad {
 
   @Column()
   estado: string;
+
+  @Column()
+  valorHora: string;
+
+  @Column()
+  descripcion: string;
 };

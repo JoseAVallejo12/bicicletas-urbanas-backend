@@ -3,5 +3,4 @@ import { ServicioFacturarAlquiler } from 'src/dominio/alquiler/servicio/servicio
 
 export function servicioFacturarAlquilerProveedor(repositorioAlquiler: RepositorioAlquiler) {
   return new ServicioFacturarAlquiler(repositorioAlquiler);
-
 }

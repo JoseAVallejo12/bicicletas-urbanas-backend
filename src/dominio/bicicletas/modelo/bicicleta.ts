@@ -5,16 +5,20 @@ export class Bicicleta {
   readonly #serial: string;
   readonly #color: string;
   readonly #almacenActual: string;
+  readonly #fechaCompra: Date;
   readonly #estado: string;
   readonly #valorHora: number;
+  readonly #descripcion: string;
 
   constructor(bicicletaDto: BicicletaDto) {
     this.#marca = bicicletaDto.marca;
     this.#serial = bicicletaDto.serial;
     this.#color = bicicletaDto.color;
     this.#almacenActual = bicicletaDto.almacenActual;
+    this.#fechaCompra = new Date(bicicletaDto.fechaCompra);
     this.#estado = bicicletaDto.estado;
     this.#valorHora = bicicletaDto.valorHora;
+    this.#descripcion = bicicletaDto.descripcion;
   }
 
   get marca(): string {
@@ -33,11 +37,19 @@ export class Bicicleta {
     return this.#almacenActual;
   }
 
+  get fechaCompra(): Date {
+    return this.#fechaCompra;
+  }
+
   get estado(): string {
     return this.#estado;
   }
 
   get valorHora(): number {
     return this.#valorHora;
+  }
+
+  get descripcion(): string {
+    return this.#descripcion;
   }
 }

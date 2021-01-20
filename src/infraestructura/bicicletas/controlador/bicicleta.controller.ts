@@ -1,11 +1,14 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Get, Param, Put } from '@nestjs/common';
+import { ComandoActualizarBicicleta } from 'src/aplicacion/bicicletas/comando/actualizar-bicicleta.comando';
+import { ManejadorActualizarBicicleta } from 'src/aplicacion/bicicletas/comando/actualizar-bicicleta.manejador';
 import { BicicletaDto } from 'src/aplicacion/bicicletas/consulta/dto/bicicletas.dto';
 import { ManejadorListarBicicleta } from 'src/aplicacion/bicicletas/consulta/listar-bicicleta.manejador';
 
 @Controller('bicicleta')
 export class BicicletaControlador {
   constructor(
-    private manejadorListarBicicletas: ManejadorListarBicicleta
+    private manejadorListarBicicletas: ManejadorListarBicicleta,
+    private manejadorActualizarBicicleta: ManejadorActualizarBicicleta,
   ) {}
 
   /**
@@ -27,4 +30,8 @@ export class BicicletaControlador {
     return this.manejadorListarBicicletas.listarBicicleta(id);
   }
 
+  @Put()
+  async actualizarEstado(@Body() comandoActualizarBicicleta: ComandoActualizarBicicleta ) {
+    this.manejadorActualizarBicicleta.ejecutar(comandoActualizarBicicleta);
+  }
 }
