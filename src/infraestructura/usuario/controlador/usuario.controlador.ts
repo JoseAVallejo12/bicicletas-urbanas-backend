@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ComandoRegistrarUsuario } from 'src/aplicacion/usuario/comando/registrar-usuario.comando';
 import { ManejadorRegistrarUsuario } from 'src/aplicacion/usuario/comando/registar-usuario.manejador';
 import { ManejadorListarUsuario } from 'src/aplicacion/usuario/consulta/listar-usuarios.manejador';
@@ -11,14 +11,19 @@ export class UsuarioControlador {
     private readonly _manejadorListarUsuario: ManejadorListarUsuario,
   ) {}
 
+  @Get('listar')
+  async listar(): Promise<UsuarioDto[]> {
+    return this._manejadorListarUsuario.ejecutar();
+  }
+
+  @Get('listar/:cedula')
+  async listarUno(@Param('cedula') cedula: string): Promise<UsuarioDto> {
+    return this._manejadorListarUsuario.ejecutarUno(cedula);
+  }
+
   @Post()
   @UsePipes(new ValidationPipe({ transform: true }))
   async crear(@Body() comandoRegistrarUsuario: ComandoRegistrarUsuario) {
     await this._manejadorRegistrarUsuario.ejecutar(comandoRegistrarUsuario);
-  }
-
-  @Get()
-  async listar(): Promise<UsuarioDto[]> {
-    return this._manejadorListarUsuario.ejecutar();
   }
 }

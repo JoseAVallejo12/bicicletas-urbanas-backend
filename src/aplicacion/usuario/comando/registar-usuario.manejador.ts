@@ -9,11 +9,7 @@ export class ManejadorRegistrarUsuario {
 
   async ejecutar(comandoRegistrarUsuario: ComandoRegistrarUsuario) {
     await this._servicioRegistrarUsuario.ejecutar(
-      new Usuario(
-        comandoRegistrarUsuario.nombre,
-        comandoRegistrarUsuario.clave,
-        comandoRegistrarUsuario.fechaCreacion,
-      ),
+      new Usuario(comandoRegistrarUsuario)
     );
   }
 }

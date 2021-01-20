@@ -14,11 +14,17 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new FiltroExcepcionesDeNegocio(logger));
+  app.enableCors({
+    origin: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Content-Type, Accept',
+  });
 
   const swaggerOptions = new DocumentBuilder()
     .setTitle('Bloque Arquitectura Hexagonal Node')
     .setDescription('Bloque que hace uso de Nest.js para la creación de API\'s con Node.js')
     .setVersion('1.0')
+    .setBasePath('/api')
     .build();
 
   const swaggerDocument = SwaggerModule.createDocument(app, swaggerOptions);

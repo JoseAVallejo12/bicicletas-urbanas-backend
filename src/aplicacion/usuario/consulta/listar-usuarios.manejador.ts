@@ -10,4 +10,8 @@ export class ManejadorListarUsuario {
   async ejecutar(): Promise<UsuarioDto[]> {
     return this._daoUsuario.listar();
   }
+
+  async ejecutarUno(cedula: string): Promise<UsuarioDto> {
+    return this._daoUsuario.listarUno(cedula);
+  }
 }
