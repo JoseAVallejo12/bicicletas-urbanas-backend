@@ -11,14 +11,23 @@ export class DaoUsuarioMysql implements DaoUsuario {
     private readonly entityManager: EntityManager,
   ) {}
 
+  /**
+   * Lista todos los usuarios en Db
+   * @returns: array de UsuarioDto
+   */
   async listar(): Promise<UsuarioDto[]> {
     return this.entityManager.query(
       'SELECT * FROM usuario',
     );
   }
 
-  async listarUno(id: string): Promise<UsuarioDto> {
-    const queryString = `SELECT * FROM usuario WHERE usuario.id=${id}`;
+  /**
+   * Busca usuarios con numero de cedula especificado
+   * @param: numero de cedula
+   * @returns: array con UsuarioDto si exite, sino array vacio
+   */
+  async listarUno(cedula: string): Promise<UsuarioDto> {
+    const queryString = `SELECT * FROM usuario WHERE usuario.cedula=${cedula}`;
     return this.entityManager.query(queryString);
   }
 }

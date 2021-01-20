@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
-import { BicicletaDto } from 'src/aplicacion/bicicletas/dto/bicicletas.dto';
+import { BicicletaDto } from 'src/aplicacion/bicicletas/consulta/dto/bicicletas.dto';
 import { DaoBicicleta } from 'src/dominio/bicicletas/puerto/dao/dao-bicicleta';
 import { EntityManager } from 'typeorm';
 

@@ -26,7 +26,7 @@ export class DaoAlquilerMysql implements DaoAlquiler {
 
   /**
    * realiza consulta en tabla alquiler por alquiler id
-   * @param id del alquiler a buscar
+   * @param: id del alquiler a buscar
    * @returns: alquiler encontrado
    */
   async listarUno(id: string): Promise<AlquilerDto> {

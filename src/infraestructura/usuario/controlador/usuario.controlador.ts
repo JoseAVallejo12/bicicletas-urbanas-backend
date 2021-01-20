@@ -11,19 +11,19 @@ export class UsuarioControlador {
     private readonly _manejadorListarUsuario: ManejadorListarUsuario,
   ) {}
 
-  @Post()
-  @UsePipes(new ValidationPipe({ transform: true }))
-  async crear(@Body() comandoRegistrarUsuario: ComandoRegistrarUsuario) {
-    await this._manejadorRegistrarUsuario.ejecutar(comandoRegistrarUsuario);
-  }
-
-  @Get()
+  @Get('listar')
   async listar(): Promise<UsuarioDto[]> {
     return this._manejadorListarUsuario.ejecutar();
   }
 
-  @Get(':id')
-  async listarUno(@Param('id') id: string): Promise<UsuarioDto> {
-    return this._manejadorListarUsuario.ejecutarUno(id);
+  @Get('listar/:cedula')
+  async listarUno(@Param('cedula') cedula: string): Promise<UsuarioDto> {
+    return this._manejadorListarUsuario.ejecutarUno(cedula);
+  }
+
+  @Post()
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async crear(@Body() comandoRegistrarUsuario: ComandoRegistrarUsuario) {
+    await this._manejadorRegistrarUsuario.ejecutar(comandoRegistrarUsuario);
   }
 }

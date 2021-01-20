@@ -1,7 +1,7 @@
-import { DaoAlquiler } from 'src/dominio/alquiler/puerto/dao/dao-alquiler';
-import { DaoAlquilerMysql } from 'src/infraestructura/alquiler/adaptador/dao/dao-alquiler-mysql';
+import { DaoBicicleta } from 'src/dominio/bicicletas/puerto/dao/dao-bicicleta';
+import { DaoBicicletaMysql } from '../../adaptador/dao/dao-bicicleta-mysql';
 
 export const DaoBicicletaProveedor = {
-  provide: DaoAlquiler,
-  useClass: DaoAlquilerMysql
+  provide: DaoBicicleta,
+  useClass: DaoBicicletaMysql
 };

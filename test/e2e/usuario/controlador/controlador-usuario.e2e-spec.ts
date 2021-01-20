@@ -78,7 +78,7 @@ describe('Pruebas al controlador de usuarios', () => {
     daoUsuario.listar.returns(Promise.resolve(usuarios));
 
     return request(app.getHttpServer())
-      .get('/usuarios')
+      .get('/usuarios/listar')
       .expect(HttpStatus.OK)
       .expect(usuarios);
   });
