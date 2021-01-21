@@ -5,7 +5,7 @@ export class Usuario {
   readonly #apellido: string;
   readonly #clave: string;
   readonly #fechaCreacion: Date;
-  readonly #cedula: string;
+  readonly #cedula: number;
   readonly #correo: string;
   readonly #telefono: string;
   readonly #direccion: string;
@@ -14,7 +14,7 @@ export class Usuario {
     this.#nombre = usuarioDto.nombre;
     this.#clave = usuarioDto.clave;
     this.#fechaCreacion = new Date(usuarioDto.fechaCreacion);
-    this.#cedula = usuarioDto.cedula;
+    this.#cedula = parseInt(usuarioDto.cedula, 10);
     this.#correo = usuarioDto.correo;
     this.#telefono = usuarioDto.telefono;
     this.#direccion = usuarioDto.direccion;
@@ -36,7 +36,7 @@ export class Usuario {
     return this.#fechaCreacion;
   }
 
-  get cedula(): string {
+  get cedula(): number {
     return this.#cedula;
   }
 

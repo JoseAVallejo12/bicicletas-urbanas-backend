@@ -6,7 +6,7 @@ import { Facturacion } from '../../modelo/facturar';
  */
 export abstract class RepositorioAlquiler {
   abstract existeIdAlquiler(id: string): Promise<boolean>;
-  abstract existeCedulaUsuario(cedulaUsuario: string): Promise<boolean>;
+  abstract existeCedulaUsuario(cedulaUsuario: number): Promise<boolean>;
   abstract actualizar(facturacion: Facturacion ): void;
   abstract guardar(alquiler: Alquiler): void;
 }

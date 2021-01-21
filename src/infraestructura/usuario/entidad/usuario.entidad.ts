@@ -18,7 +18,7 @@ export class UsuarioEntidad {
   fechaCreacion: Date;
 
   @Column()
-  cedula: string;
+  cedula: number;
 
   @Column()
   correo: string;

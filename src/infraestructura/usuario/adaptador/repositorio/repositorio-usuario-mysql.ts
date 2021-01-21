@@ -12,8 +12,8 @@ export class RepositorioUsuarioMysql implements RepositorioUsuario {
     private readonly repositorio: Repository<UsuarioEntidad>,
   ) {}
 
-  async existeCedulaUsuario(nombre: string): Promise<boolean> {
-    return (await this.repositorio.count({ nombre })) > 0;
+  async existeCedulaUsuario(cedula: number): Promise<boolean> {
+    return (await this.repositorio.count({ cedula })) > 0;
   }
 
   async guardar(usuario: Usuario) {
