@@ -22,7 +22,7 @@ describe('Alquiler', () => {
     expect(alquiler.ciudad).toEqual('barranquilla');
     expect(alquiler.fechaAlquiler.toTimeString().slice(0, corteString))
       .toEqual(alquilerData.fechaAlquiler.split(' ')[1]);
-    expect(alquiler.cedulaUsuario).toBe(alquilerData.cedulaUsuario);
+    expect(alquiler.cedulaUsuario).toBe(parseInt(alquilerData.cedulaUsuario, 10));
   });
 
   it('Crear alquiler ciudad no habiliatda', () => {

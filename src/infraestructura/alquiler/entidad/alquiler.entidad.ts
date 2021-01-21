@@ -6,7 +6,7 @@ export class AlquilerEntidad {
   id: number;
 
   @Column()
-  cedulaUsuario: string;
+  cedulaUsuario: number;
 
   @Column()
   serialBicicleta: string;

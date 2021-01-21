@@ -28,7 +28,7 @@ export class RepositorioAlquilerMysql implements RepositorioAlquiler {
    * @param cedulaUsuario valor unico para cada usuario
    * @returns: true si ya tiene un alquiler activo
    */
-  async existeCedulaUsuario(cedulaUsuario: string): Promise<boolean> {
+  async existeCedulaUsuario(cedulaUsuario: number): Promise<boolean> {
     return await this.repositorio.count({ where: {cedulaUsuario, estado: true }}) > 0;
   }
 
