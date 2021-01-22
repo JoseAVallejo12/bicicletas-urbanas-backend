@@ -1,4 +1,5 @@
 import { BicicletaDto } from 'src/aplicacion/bicicletas/consulta/dto/bicicletas.dto';
+import { ErrorValorHoraInvalido } from 'src/dominio/errores/error-valor-hora-invalido';
 
 export class Bicicleta {
   readonly #marca: string;
@@ -11,6 +12,7 @@ export class Bicicleta {
   readonly #descripcion: string;
 
   constructor(bicicletaDto: BicicletaDto) {
+    this.validarValorHora(bicicletaDto.valorHora);
     this.#marca = bicicletaDto.marca;
     this.#serial = bicicletaDto.serial;
     this.#color = bicicletaDto.color;
@@ -19,6 +21,14 @@ export class Bicicleta {
     this.#estado = bicicletaDto.estado;
     this.#valorHora = bicicletaDto.valorHora;
     this.#descripcion = bicicletaDto.descripcion;
+  }
+
+  private validarValorHora(valor: number) {
+    const minimoValor = 1000;
+    let mensaje = `Valor Hora: ${valor} debe ser superior a ${minimoValor} COP`;
+    if (valor <= minimoValor ) {
+      throw new ErrorValorHoraInvalido(mensaje);
+    }
   }
 
   get marca(): string {
