@@ -8,7 +8,7 @@ describe('Alquiler', () => {
   beforeEach(() =>{
     alquilerData = {
       cedulaUsuario: '43343567',
-      serialBicicleta: '3KJ2H435',
+      idBicicleta: '335',
       ciudad: 'barranquilla',
       estado: true,
       fechaAlquiler: '2020-09-20 20:57:07'
