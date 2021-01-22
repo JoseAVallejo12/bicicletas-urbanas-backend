@@ -3,60 +3,75 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Alquiler } from 'src/dominio/alquiler/modelo/alquiler';
 import { Facturacion } from 'src/dominio/alquiler/modelo/facturar';
 import { RepositorioAlquiler } from 'src/dominio/alquiler/puerto/repositorio/repositorio-alquiler';
+import { BicicletaEntidad } from 'src/infraestructura/bicicletas/entidad/bicicleta.entidad';
+import { UsuarioEntidad } from 'src/infraestructura/usuario/entidad/usuario.entidad';
 import { Repository } from 'typeorm';
 import { AlquilerEntidad } from '../../entidad/alquiler.entidad';
 
 @Injectable()
 export class RepositorioAlquilerMysql implements RepositorioAlquiler {
   constructor(
-    @InjectRepository(AlquilerEntidad)
-    private readonly repositorio: Repository<AlquilerEntidad>
+    @InjectRepository(AlquilerEntidad) private readonly repositorioAlquiler: Repository<AlquilerEntidad>,
+    @InjectRepository(UsuarioEntidad) private readonly repositorioUsuario: Repository<UsuarioEntidad>,
+    @InjectRepository(BicicletaEntidad) private readonly repoBicicleta: Repository<BicicletaEntidad>
   ) {}
 
-  /**
-   * verificar que exite el registro alquiler en db
-   * @param id alquiler
-   * @returns: true si exite, de lo contrario false
-   */
-  async existeIdAlquiler(id: string): Promise<boolean> {
+
+  async existeUsuario(cedulaUsuario: string): Promise<boolean> {
+    const cedula = parseInt(cedulaUsuario, 10);
+    return (await this.repositorioUsuario.count({ cedula })) > 0;
+  }
+
+
+  async existeBicicleta(id: string): Promise<boolean> {
     const alquilerId = parseInt(id, 10);
-    return (await this.repositorio.count({ id: alquilerId })) > 0;
+    return (await this.repoBicicleta.count({ id: alquilerId })) > 0;
   }
 
-  /**
-   * Validar que un usuario no tenga mas de dos alquileres en estado activo
-   * @param cedulaUsuario valor unico para cada usuario
-   * @returns: true si ya tiene un alquiler activo
-   */
-  async existeCedulaUsuario(cedulaUsuario: number): Promise<boolean> {
-    return await this.repositorio.count({ where: {cedulaUsuario, estado: true }}) > 0;
+
+  async existeAlquiler(id: string): Promise<boolean> {
+    const alquilerId = parseInt(id, 10);
+    return (await this.repositorioAlquiler.count({ id: alquilerId })) > 0;
   }
 
-  /**
-   * Actualizar el estado del alquiler para cerrar y facturar
-   * @param facturacion datos para cerrar el alquiler
-   */
+
+  async usuarioHabilitado(cedulaUsuario: string): Promise<boolean> {
+    const cedula = parseInt(cedulaUsuario, 10);
+    return await this.repositorioAlquiler.count({ where: {cedulaUsuario: cedula, estado: true }}) > 0;
+  }
+
+
+  async bicicletaLibre(id: string): Promise<boolean> {
+    const bicicletaId = parseInt(id, 10);
+    return await this.repoBicicleta.count({ where: {id: bicicletaId, estado: 'libre' }}) > 0;
+  }
+
+
+  async actualizarEstadoBicicleta(id: string) {
+    const bicicletaId = parseInt(id, 10);
+    let registroBicicleta = await this.repoBicicleta.findOne({id: bicicletaId});
+    registroBicicleta.estado = 'alquilada';
+    this.repoBicicleta.save(registroBicicleta);
+  }
+
   async actualizar(facturacion: Facturacion): Promise<void> {
     const id = parseInt(facturacion.idAlquiler, 10);
-    let registroAlquiler = await this.repositorio.findOne(id);
+    let registroAlquiler = await this.repositorioAlquiler.findOne(id);
     registroAlquiler.estado = false;
     registroAlquiler.fechaEntrega = facturacion.fechaEntrega;
     registroAlquiler.horasTranscurridas = facturacion.totalHoras;
     registroAlquiler.total = facturacion.total;
-    this.repositorio.save(registroAlquiler);
+    this.repositorioAlquiler.save(registroAlquiler);
   }
 
-  /**
-   * guerda un nuevo alquiler en base de datos
-   * @param alquiler de tipo objeto de dominio
-   */
+
   async guardar(alquiler: Alquiler) {
     const entidad = new AlquilerEntidad();
     entidad.cedulaUsuario = alquiler.cedulaUsuario;
-    entidad.serialBicicleta = alquiler.serialBicicleta;
+    entidad.idBicicleta = alquiler.idBicicleta;
     entidad.fechaAlquiler = alquiler.fechaAlquiler;
     entidad.ciudad = alquiler.ciudad;
     entidad.estado = alquiler.estado;
-    await this.repositorio.save(entidad);
+    await this.repositorioAlquiler.save(entidad);
   }
 }

@@ -7,7 +7,8 @@ export class ServicioActualizarBicicleta {
 
   async actualizarBicicleta(estado: string, id: string) {
     const mensaje = `Bicicleta Id: ${id} no encontrada`;
-    if (!await this.repositiorioBicicleta.existeIdBicicleta(id)) {
+    const idBicicleta = parseInt(id, 10);
+    if (!await this.repositiorioBicicleta.existeIdBicicleta(idBicicleta)) {
       throw new ErrorBicicletaNoEncontrada(mensaje);
     }
     this.repositiorioBicicleta.actualizar(estado, id);

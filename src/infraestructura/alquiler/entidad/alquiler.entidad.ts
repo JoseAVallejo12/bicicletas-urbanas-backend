@@ -9,7 +9,7 @@ export class AlquilerEntidad {
   cedulaUsuario: number;
 
   @Column()
-  serialBicicleta: string;
+  idBicicleta: number;
 
   @Column()
   fechaAlquiler: Date;

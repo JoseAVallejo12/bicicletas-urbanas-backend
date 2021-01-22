@@ -15,8 +15,12 @@ describe('Servicio Registrar Alquiler', () => {
 
   beforeEach(() => {
     repositorioAlquilerStub = createStubObj<RepositorioAlquiler>([
-      'existeCedulaUsuario',
-      'existeIdAlquiler',
+      'existeAlquiler',
+      'existeBicicleta',
+      'existeUsuario',
+      'usuarioHabilitado',
+      'actualizarEstadoBicicleta',
+      'bicicletaLibre',
       'actualizar',
       'guardar'
     ]);
@@ -24,7 +28,7 @@ describe('Servicio Registrar Alquiler', () => {
     servicioFacturarAlquiler = new ServicioFacturarAlquiler(repositorioAlquilerStub);
     alquilerDto = {
       cedulaUsuario: '73456879',
-      serialBicicleta: 'HU173648',
+      idBicicleta: '3458',
       fechaAlquiler: new Date().toISOString(),
       ciudad: 'barranquilla',
       estado: true
@@ -34,11 +38,11 @@ describe('Servicio Registrar Alquiler', () => {
 
   it('Usuario con una bicicleta asiganada activa', async () => {
 
-    repositorioAlquilerStub.existeCedulaUsuario.returns(Promise.resolve(true));
+    repositorioAlquilerStub.usuarioHabilitado.returns(Promise.resolve(true));
 
     await expect(
       servicioRegistrarAlquiler.guardar(new Alquiler(alquilerDto)),
-    ).rejects.toThrow(`Usuario con Cedula: ${alquilerDto.cedulaUsuario} ya tiene una bicicleta asignada`);
+    ).rejects.toThrow(`Usuario con Cedula: ${alquilerDto.cedulaUsuario} no registrado en sistema`);
   });
 
 
@@ -50,7 +54,7 @@ describe('Servicio Registrar Alquiler', () => {
       fechaInicio: new Date().toISOString(),
       fechaEntrega: new Date().toISOString()
     };
-    repositorioAlquilerStub.existeIdAlquiler.returns(Promise.resolve(false));
+    repositorioAlquilerStub.existeAlquiler.returns(Promise.resolve(false));
 
     await expect(
       servicioFacturarAlquiler.actualizarAlquiler(new Facturacion(facturacionDto)),

@@ -49,8 +49,12 @@ describe('Pruebas al controlador de alquiler', () => {
    **/
   beforeAll(async () => {
     repositorioAlquiler = createStubObj<RepositorioAlquiler>([
-      'existeCedulaUsuario',
-      'existeIdAlquiler',
+      'existeAlquiler',
+      'existeBicicleta',
+      'existeUsuario',
+      'usuarioHabilitado',
+      'actualizarEstadoBicicleta',
+      'bicicletaLibre',
       'actualizar',
       'guardar'
     ], sinonSandbox);
@@ -86,11 +90,11 @@ describe('Pruebas al controlador de alquiler', () => {
 
   beforeEach(() => {
     alquilerDto = {
-      cedulaUsuario: '72283599500',
-      serialBicicleta: 'C4SDJCT4FC238515',
+      cedulaUsuario: '72283599',
+      idBicicleta: '5',
       fechaAlquiler: '',
       ciudad: 'barranquilla',
-      estado: false,
+      estado: true,
     };
     facturacionDto = {
       idAlquiler: '42',
@@ -121,7 +125,11 @@ describe('Pruebas al controlador de alquiler', () => {
 
 
   it('deberia crear un nuevo alquiler', async () => {
-    alquilerDto.fechaAlquiler = new Date('2020-09-20 21:57:07').toISOString();
+    alquilerDto.fechaAlquiler = new Date('2020-09-20 20:57:07').toISOString();
+    repositorioAlquiler.existeUsuario.returns(Promise.resolve(true));
+    repositorioAlquiler.existeBicicleta.returns(Promise.resolve(true));
+    repositorioAlquiler.usuarioHabilitado.returns(Promise.resolve(false));
+    repositorioAlquiler.bicicletaLibre.returns(Promise.resolve(true));
     repositorioAlquiler.guardar.returns();
 
     return request(app.getHttpServer())
@@ -145,7 +153,7 @@ describe('Pruebas al controlador de alquiler', () => {
   it('deberia facturar un alquiler', async () => {
     facturacionDto.fechaEntrega = new Date('2020-09-20 13:57:07').toISOString();
     facturacionDto.fechaEntrega = new Date('2020-09-20 18:57:07').toISOString();
-    repositorioAlquiler.existeIdAlquiler.returns(Promise.resolve(true));
+    repositorioAlquiler.existeAlquiler.returns(Promise.resolve(true));
 
     return request(app.getHttpServer())
       .put('/alquiler')

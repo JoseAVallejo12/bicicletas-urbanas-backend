@@ -27,7 +27,8 @@ export class DaoUsuarioMysql implements DaoUsuario {
    * @returns: array con UsuarioDto si exite, sino array vacio
    */
   async listarUno(cedula: string): Promise<UsuarioDto> {
-    const queryString = `SELECT * FROM usuario WHERE usuario.cedula=${cedula}`;
+    const cedulaInt = parseInt(cedula, 10);
+    const queryString = `SELECT * FROM usuario WHERE usuario.cedula=${cedulaInt}`;
     return this.entityManager.query(queryString);
   }
 }
