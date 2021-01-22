@@ -4,11 +4,12 @@ import { RepositorioAlquiler } from '../puerto/repositorio/repositorio-alquiler'
 
 export class ServicioFacturarAlquiler {
 
-  constructor(private repositorioAlquiler: RepositorioAlquiler) {}
+  constructor(
+    private repositorioAlquiler: RepositorioAlquiler) {}
 
   async actualizarAlquiler(facturacion: Facturacion) {
     const mensaje = `Alquiler Id: ${facturacion.idAlquiler} no encontrado`;
-    if (!await this.repositorioAlquiler.existeIdAlquiler(facturacion.idAlquiler)) {
+    if (!await this.repositorioAlquiler.existeAlquiler(facturacion.idAlquiler)) {
       throw new ErrorAlquilerNoEncontrado(mensaje);
     }
     this.repositorioAlquiler.actualizar(facturacion);

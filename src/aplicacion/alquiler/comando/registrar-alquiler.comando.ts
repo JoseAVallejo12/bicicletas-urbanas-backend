@@ -7,8 +7,8 @@ export class ComandoRegistrarAlquiler {
   public cedulaUsuario: string;
 
   @IsString()
-  @ApiProperty({ example: '6656348327343'})
-  public serialBicicleta: string;
+  @ApiProperty({ example: '6'})
+  public idBicicleta: string;
 
   @IsDateString()
   @ApiProperty({ type: Date })

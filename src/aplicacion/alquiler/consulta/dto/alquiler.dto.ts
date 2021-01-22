@@ -10,7 +10,7 @@ export class AlquilerDto {
   cedulaUsuario: string;
 
   @ApiProperty({ example: 'HU173648' })
-  serialBicicleta: string;
+  idBicicleta: string;
 
   @ApiProperty({ example: '2020-09-20 21:57:07' })
   fechaAlquiler: string;
