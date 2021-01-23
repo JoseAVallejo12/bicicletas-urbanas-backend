@@ -22,9 +22,10 @@ export class RepositorioUsuarioMysql implements RepositorioUsuario {
   }
 
   async actualizarEstado(cedula: number, estado: boolean) {
-    const entidad =  await this.repositorio.findOne({ cedula });
-    entidad.estado = estado;
-    await this.repositorio.save(entidad);
+    const usuario =  await this.repositorio.findOne(cedula);
+    usuario.estado = estado;
+    await this.repositorio.save(usuario);
+    console.log(usuario);
   }
 
   async guardar(usuario: Usuario) {

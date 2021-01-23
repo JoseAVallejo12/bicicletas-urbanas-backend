@@ -16,7 +16,7 @@ import { ManejadorFacturarAlquiler } from 'src/aplicacion/alquiler/comando/factu
 import { ServicioFacturarAlquiler } from 'src/dominio/alquiler/servicio/servicio-facturar-alquiler';
 import { servicioFacturarAlquilerProveedor } from 'src/infraestructura/alquiler/proveedor/servicio/servicio-facturar-alquiler.proveedor';
 import { AlquilerDto } from 'src/aplicacion/alquiler/consulta/dto/alquiler.dto';
-import { FacturacionDto } from 'src/aplicacion/alquiler/consulta/dto/facturar.dto';
+import { FacturacionDto } from 'src/dominio/alquiler/puerto/dto/facturar.dto';
 
 /**
  * Un sandbox es util cuando el módulo de nest se configura una sola vez durante el ciclo completo de pruebas

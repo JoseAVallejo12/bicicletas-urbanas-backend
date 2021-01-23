@@ -17,6 +17,11 @@ export class RepositorioBicicletaMsql implements RepositorioBicicleta {
     return (await this.repositorio.count({ id })) > 0;
   }
 
+  async obtenerValorHora(id: number): Promise<number> {
+    const bicicletaInfo = await this.repositorio.findOne({ id });
+    return (parseInt(bicicletaInfo.valorHora, 10));
+  }
+
   async bicicletaHabilitada (id:number): Promise<boolean> {
     const estado = 'libre';
     return (await this.repositorio.count({ where: {id, estado}})) > 0;

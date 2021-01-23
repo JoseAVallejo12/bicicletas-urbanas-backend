@@ -19,18 +19,21 @@ import { RepositorioUsuario } from 'src/dominio/usuario/puerto/repositorio/repos
 import { repositorioBicicletaProvedor } from 'src/infraestructura/bicicletas/proveedor/repositorio/repositorio-bicicleta.proveedor';
 import { repositorioUsuarioProvider } from 'src/infraestructura/usuario/proveedor/repositorio/repositorio-usuario.proveedor';
 
+const repositorios = [RepositorioAlquiler, RepositorioBicicleta, RepositorioUsuario];
+
 @Module({
   imports: [TypeOrmModule.forFeature([AlquilerEntidad, UsuarioEntidad, BicicletaEntidad])],
   providers: [
-    { provide: ServicioRegistraAlquiler, inject: [RepositorioAlquiler, RepositorioBicicleta, RepositorioUsuario], useFactory: servicioRegistrarAlquilerProveedor },
-    { provide: ServicioFacturarAlquiler, inject: [RepositorioAlquiler], useFactory: servicioFacturarAlquilerProveedor },
+    { provide: ServicioRegistraAlquiler, inject: repositorios, useFactory: servicioRegistrarAlquilerProveedor },
+    { provide: ServicioFacturarAlquiler, inject: repositorios, useFactory: servicioFacturarAlquilerProveedor },
     repositorioAlquilerProvedor,
     repositorioBicicletaProvedor,
     repositorioUsuarioProvider,
+    DaoAlquilerProvedor,
     ManejadorRegistrarAlquiler,
     ManejadorListarAlquiler,
-    ManejadorFacturarAlquiler,
-    DaoAlquilerProvedor,
+    ManejadorFacturarAlquiler
+
   ],
   exports: [
     ServicioRegistraAlquiler,

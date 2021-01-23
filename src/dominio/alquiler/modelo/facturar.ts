@@ -1,8 +1,8 @@
-import { FacturacionDto } from 'src/aplicacion/alquiler/consulta/dto/facturar.dto';
+import { FacturacionDto } from 'src/dominio/alquiler/puerto/dto/facturar.dto';
 import { ErrorValorHoraInvalido } from 'src/dominio/errores/error-valor-hora-invalido';
 
 export class Facturacion {
-  readonly #idAlquiler: string;
+  readonly #idAlquiler: number;
   readonly #fechaInicio: Date;
   readonly #fechaEntrega: Date;
   readonly #valorHora: number;
@@ -11,21 +11,20 @@ export class Facturacion {
 
   constructor(facturacionDto: FacturacionDto) {
     this.#idAlquiler = facturacionDto.idAlquiler;
-    this.#fechaInicio = new Date(facturacionDto.fechaInicio);
-    this.#fechaEntrega = new Date(facturacionDto.fechaEntrega);
-    this.#valorHora = this.validarValorHora(facturacionDto.valorHora);
+    this.#fechaInicio = facturacionDto.fechaInicio;
+    this.#fechaEntrega = facturacionDto.fechaEntrega;
+    this.#valorHora = this.validarValor(facturacionDto.valorHora);
     this.#totalHoras = this.horasTrasncurridas();
     this.#total = this.facturar();
   }
 
-  private validarValorHora(valor: string): number {
+  private validarValor(valor: number): number {
     const valorMin = 1000;
-    const valorInt = parseInt(valor, 10);
     const mensaje = `Valor: ${valor} no valido para facturar`;
-    if (valorInt <= valorMin ) {
+    if (valor <= valorMin ) {
       throw new ErrorValorHoraInvalido(mensaje);
     }
-    return valorInt;
+    return valor;
   }
 
   private facturar(): number {
@@ -37,18 +36,18 @@ export class Facturacion {
   }
 
   private horasTrasncurridas(): number {
-    const msToSeg = 1000;
-    const segToMin = 60;
-    const minToHr = 60;
-    let milisegundos = this.#fechaEntrega.getTime() - this.#fechaInicio.getTime();
-    return (Math.round(milisegundos/ (msToSeg * segToMin * minToHr)));
+    const milisegundos = 1000;
+    const minutos = 60;
+    const horas = 60;
+    let tiempoEnMilisegundos = this.#fechaEntrega.getTime() - this.#fechaInicio.getTime();
+    return (Math.round(tiempoEnMilisegundos/ (milisegundos * minutos * horas)));
   }
 
   private aplicarDescuento(tiempo: number): number {
     return 1;
   }
 
-  get idAlquiler(): string {
+  get idAlquiler(): number {
     return this.#idAlquiler;
   }
 

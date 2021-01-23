@@ -1,4 +1,4 @@
-import { IsDateString, IsString } from 'class-validator';
+import { IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class ComandoFacturarAlquiler {
@@ -6,15 +6,15 @@ export class ComandoFacturarAlquiler {
   @ApiProperty({ example: '12' })
   public idAlquiler: string;
 
-  @IsString()
+/*   @IsString()
   @ApiProperty({ example: '1500' })
-  public valorHora: string;
+  public valorHora: string; */
 
-  @IsDateString()
+/*   @IsDateString()
   @ApiProperty({ type: Date })
-  public fechaInicio: string;
+  public fechaInicio: string; */
 
-  @IsDateString()
+/*   @IsDateString()
   @ApiProperty({ type: Date })
-  public fechaEntrega: string;
+  public fechaEntrega: string; */
 }

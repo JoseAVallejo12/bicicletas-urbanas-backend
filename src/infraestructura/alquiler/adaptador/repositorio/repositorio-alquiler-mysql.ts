@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Alquiler } from 'src/dominio/alquiler/modelo/alquiler';
 import { Facturacion } from 'src/dominio/alquiler/modelo/facturar';
+import { AlquilerInfoDto } from 'src/dominio/alquiler/puerto/dto/alquilerInfo.dto';
 import { RepositorioAlquiler } from 'src/dominio/alquiler/puerto/repositorio/repositorio-alquiler';
 import { Repository } from 'typeorm';
 import { AlquilerEntidad } from '../../entidad/alquiler.entidad';
@@ -13,16 +14,24 @@ export class RepositorioAlquilerMysql implements RepositorioAlquiler {
   ) {}
 
 
-
   async existeAlquiler(id: string): Promise<boolean> {
     const alquilerId = parseInt(id, 10);
     return (await this.repositorioAlquiler.count({ id: alquilerId })) > 0;
   }
 
+  async buscarAlquiler(id: string): Promise<AlquilerInfoDto> {
+    const alquilerId = parseInt(id, 10);
+    const alquiler = await this.repositorioAlquiler.findOne({ id: alquilerId });
+    return {
+      cedulaUsuario: alquiler.cedulaUsuario,
+      idBicicleta: alquiler.idBicicleta,
+      fechaAlquiler: alquiler.fechaAlquiler
+    };
+  }
+
 
   async actualizar(facturacion: Facturacion): Promise<void> {
-    const id = parseInt(facturacion.idAlquiler, 10);
-    let registroAlquiler = await this.repositorioAlquiler.findOne(id);
+    let registroAlquiler = await this.repositorioAlquiler.findOne(facturacion.idAlquiler);
     registroAlquiler.estado = false;
     registroAlquiler.fechaEntrega = facturacion.fechaEntrega;
     registroAlquiler.horasTranscurridas = facturacion.totalHoras;
