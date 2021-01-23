@@ -1,4 +1,4 @@
-import { IsDateString, IsString } from 'class-validator';
+import { IsBoolean, IsDateString, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { date } from '@hapi/joi';
 
@@ -11,9 +11,9 @@ export class ComandoRegistrarUsuario {
   @ApiProperty({ example: 'Smith'})
   public apellido: string;
 
-  @IsString()
-  @ApiProperty({ minLength: 4, example: '1234' })
-  public clave: string;
+  @IsBoolean()
+  @ApiProperty({ example: false })
+  public estado: boolean;
 
   @IsDateString()
   @ApiProperty({ type: date })

@@ -9,8 +9,8 @@ export class UsuarioDto {
   @ApiProperty({ example: 'Smith'})
   apellido: string;
 
-  @ApiProperty({ minLength: 4, example: '1234' })
-  clave: string;
+  @ApiProperty({ example: false })
+  estado: boolean;
 
   @ApiProperty({ type: date })
   fechaCreacion: string;

@@ -3,7 +3,7 @@ import { UsuarioDto } from 'src/aplicacion/usuario/consulta/dto/usuario.dto';
 export class Usuario {
   readonly #nombre: string;
   readonly #apellido: string;
-  readonly #clave: string;
+  readonly #estado: boolean;
   readonly #fechaCreacion: Date;
   readonly #cedula: number;
   readonly #correo: string;
@@ -12,7 +12,7 @@ export class Usuario {
 
   constructor(usuarioDto: UsuarioDto) {
     this.#nombre = usuarioDto.nombre;
-    this.#clave = usuarioDto.clave;
+    this.#estado = usuarioDto.estado;
     this.#fechaCreacion = new Date(usuarioDto.fechaCreacion);
     this.#cedula = parseInt(usuarioDto.cedula, 10);
     this.#correo = usuarioDto.correo;
@@ -28,8 +28,8 @@ export class Usuario {
     return this.#apellido;
   }
 
-  get clave(): string {
-    return this.#clave;
+  get estado(): boolean {
+    return this.#estado;
   }
 
   get fechaCreacion(): Date {

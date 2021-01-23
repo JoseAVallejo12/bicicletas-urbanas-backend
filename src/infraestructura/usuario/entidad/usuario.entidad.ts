@@ -12,7 +12,7 @@ export class UsuarioEntidad {
   apellido: string;
 
   @Column()
-  clave: string;
+  estado: boolean;
 
   @Column()
   fechaCreacion: Date;
