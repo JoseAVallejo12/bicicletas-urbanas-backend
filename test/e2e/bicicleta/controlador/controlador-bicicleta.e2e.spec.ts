@@ -99,4 +99,4 @@ describe('Pruebas del controlador para bicicletas', () => {
       .expect(bicicletas);
     });
 
-})
+});
