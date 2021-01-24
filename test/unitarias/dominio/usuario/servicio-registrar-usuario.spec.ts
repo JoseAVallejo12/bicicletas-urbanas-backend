@@ -21,7 +21,7 @@ describe('ServicioRegistrarUsuario', () => {
     userData = {
       nombre: 'Carlos',
       apellido: 'Perez',
-      clave: '47il78',
+      estado: true,
       fechaCreacion: new Date().toISOString(),
       cedula: (Math.floor(Math.random() * (maxNumCc - minNumCc + 1)) + minNumCc).toString(),
       correo: 'test@test.com.co',
