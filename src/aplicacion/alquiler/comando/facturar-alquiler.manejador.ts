@@ -5,7 +5,7 @@ import { ComandoFacturarAlquiler } from './facturar-alquiler.comando';
 @Injectable()
 export class ManejadorFacturarAlquiler {
 
-  constructor(private servicioFacturarAlquiler: ServicioFacturarAlquiler) {}
+  constructor(private servicioFacturarAlquiler: ServicioFacturarAlquiler) { }
 
   async ejecutar(comandoFacturarAlquiler: ComandoFacturarAlquiler) {
     const idAlquiler = comandoFacturarAlquiler.idAlquiler;

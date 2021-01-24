@@ -12,7 +12,7 @@ export class BicicletaControlador {
     private manejadorListarBicicletas: ManejadorListarBicicleta,
     private manejadorActualizarBicicleta: ManejadorActualizarBicicleta,
     private manejadorRegistrarBicicleta: ManejadorRegistrarBicicleta
-  ) {}
+  ) { }
 
 
   @Get('listar')
@@ -26,12 +26,12 @@ export class BicicletaControlador {
   }
 
   @Post()
-  async crearBicicleta(@Body() comandoRegistrarBicicleta: ComandoRegistrarBicicleta){
+  async crearBicicleta(@Body() comandoRegistrarBicicleta: ComandoRegistrarBicicleta) {
     this.manejadorRegistrarBicicleta.ejecutar(comandoRegistrarBicicleta);
   }
 
   @Put()
-  async actualizarEstado(@Body() comandoActualizarBicicleta: ComandoActualizarBicicleta ) {
+  async actualizarEstado(@Body() comandoActualizarBicicleta: ComandoActualizarBicicleta) {
     this.manejadorActualizarBicicleta.ejecutar(comandoActualizarBicicleta);
   }
 }

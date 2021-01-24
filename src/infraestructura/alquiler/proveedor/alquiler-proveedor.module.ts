@@ -20,9 +20,10 @@ import { repositorioBicicletaProvedor } from 'src/infraestructura/bicicletas/pro
 import { repositorioUsuarioProvider } from 'src/infraestructura/usuario/proveedor/repositorio/repositorio-usuario.proveedor';
 
 const repositorios = [RepositorioAlquiler, RepositorioBicicleta, RepositorioUsuario];
+const entidades = [AlquilerEntidad, UsuarioEntidad, BicicletaEntidad];
 
 @Module({
-  imports: [TypeOrmModule.forFeature([AlquilerEntidad, UsuarioEntidad, BicicletaEntidad])],
+  imports: [TypeOrmModule.forFeature(entidades)],
   providers: [
     { provide: ServicioRegistraAlquiler, inject: repositorios, useFactory: servicioRegistrarAlquilerProveedor },
     { provide: ServicioFacturarAlquiler, inject: repositorios, useFactory: servicioFacturarAlquilerProveedor },
@@ -46,4 +47,4 @@ const repositorios = [RepositorioAlquiler, RepositorioBicicleta, RepositorioUsua
     DaoAlquiler
   ],
 })
-export class AlquilerProveedorModule {}
+export class AlquilerProveedorModule { }

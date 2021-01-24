@@ -4,8 +4,8 @@ import { AlquilerInfoDto } from '../dto/alquilerInfo.dto';
 
 
 export abstract class RepositorioAlquiler {
-  abstract existeAlquiler(id: string): Promise<boolean>;
+  abstract existeAlquilerSinFacturar(id: string): Promise<boolean>;
   abstract buscarAlquiler(id: string): Promise<AlquilerInfoDto>;
-  abstract actualizar(facturacion: Facturacion ): void;
+  abstract actualizar(facturacion: Facturacion): void;
   abstract guardar(alquiler: Alquiler): void;
 }

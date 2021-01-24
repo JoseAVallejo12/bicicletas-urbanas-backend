@@ -21,7 +21,7 @@ export class Facturacion {
   private validarValor(valor: number): number {
     const valorMin = 1000;
     const mensaje = `Valor: ${valor} no valido para facturar`;
-    if (valor <= valorMin ) {
+    if (valor <= valorMin) {
       throw new ErrorValorHoraInvalido(mensaje);
     }
     return valor;
@@ -40,7 +40,7 @@ export class Facturacion {
     const minutos = 60;
     const horas = 60;
     let tiempoEnMilisegundos = this.#fechaEntrega.getTime() - this.#fechaInicio.getTime();
-    return (Math.round(tiempoEnMilisegundos/ (milisegundos * minutos * horas)));
+    return (Math.round(tiempoEnMilisegundos / (milisegundos * minutos * horas)));
   }
 
   private aplicarDescuento(tiempo: number): number {

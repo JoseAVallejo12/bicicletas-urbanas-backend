@@ -10,7 +10,7 @@ export class RepositorioUsuarioMysql implements RepositorioUsuario {
   constructor(
     @InjectRepository(UsuarioEntidad)
     private readonly repositorio: Repository<UsuarioEntidad>,
-  ) {}
+  ) { }
 
   async existeCedulaUsuario(cedula: number): Promise<boolean> {
     return (await this.repositorio.count({ cedula })) > 0;
@@ -18,14 +18,13 @@ export class RepositorioUsuarioMysql implements RepositorioUsuario {
 
   async usuarioHabilitado(cedula: number): Promise<boolean> {
     const estado = true;
-    return (await this.repositorio.count({ where: {cedula, estado}})) > 0;
+    return (await this.repositorio.count({ where: { cedula, estado } })) > 0;
   }
 
   async actualizarEstado(cedula: number, estado: boolean) {
-    const usuario =  await this.repositorio.findOne(cedula);
+    const usuario = await this.repositorio.findOne({ cedula });
     usuario.estado = estado;
     await this.repositorio.save(usuario);
-    console.log(usuario);
   }
 
   async guardar(usuario: Usuario) {

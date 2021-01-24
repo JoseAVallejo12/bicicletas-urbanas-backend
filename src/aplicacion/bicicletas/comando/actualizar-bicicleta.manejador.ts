@@ -4,7 +4,7 @@ import { ComandoActualizarBicicleta } from "./actualizar-bicicleta.comando";
 
 @Injectable()
 export class ManejadorActualizarBicicleta {
-  constructor (private servicioactualizarBicicleta: ServicioActualizarBicicleta) {}
+  constructor(private servicioactualizarBicicleta: ServicioActualizarBicicleta) { }
 
   async ejecutar(comandoactualizarBicicleta: ComandoActualizarBicicleta) {
     await this.servicioactualizarBicicleta.actualizarBicicleta(

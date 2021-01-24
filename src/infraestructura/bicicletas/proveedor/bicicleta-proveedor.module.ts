@@ -10,7 +10,10 @@ import { ServicioRegistrarBicicleta } from 'src/dominio/bicicletas/servicio/serv
 import { BicicletaEntidad } from '../entidad/bicicleta.entidad';
 import { DaoBicicletaProveedor } from './dao/dao-bicicleta.proveedor';
 import { repositorioBicicletaProvedor } from './repositorio/repositorio-bicicleta.proveedor';
-import { servicioActualizarBicicletaProveedor, servicioRegistrarBicicletaProveedor } from './servicio/servicio-actualizar-bicicleta.proveedor';
+import {
+  servicioActualizarBicicletaProveedor,
+  servicioRegistrarBicicletaProveedor
+} from './servicio/servicio-actualizar-bicicleta.proveedor';
 
 @Module({
   imports: [TypeOrmModule.forFeature([BicicletaEntidad])],
@@ -40,4 +43,4 @@ import { servicioActualizarBicicletaProveedor, servicioRegistrarBicicletaProveed
     DaoBicicleta
   ]
 })
-export class BicicletaProveedorModule {}
+export class BicicletaProveedorModule { }

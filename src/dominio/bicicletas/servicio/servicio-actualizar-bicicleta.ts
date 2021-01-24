@@ -3,7 +3,7 @@ import { RepositorioBicicleta } from '../puerto/repositorio/repositorio-biciclet
 
 export class ServicioActualizarBicicleta {
 
-  constructor(private repositiorioBicicleta: RepositorioBicicleta) {}
+  constructor(private repositiorioBicicleta: RepositorioBicicleta) { }
 
   async actualizarBicicleta(estado: string, id: string) {
 

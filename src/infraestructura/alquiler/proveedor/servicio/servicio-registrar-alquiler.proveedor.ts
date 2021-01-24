@@ -8,11 +8,10 @@ export function servicioRegistrarAlquilerProveedor(
   repositorioAlquiler: RepositorioAlquiler,
   repositorioBicicleta: RepositorioBicicleta,
   repositorioUsuario: RepositorioUsuario
-  ) {
+) {
   return new ServicioRegistraAlquiler(
     repositorioAlquiler,
     repositorioBicicleta,
     repositorioUsuario
-    );
+  );
 }
-

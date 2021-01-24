@@ -9,7 +9,7 @@ export class UsuarioControlador {
   constructor(
     private readonly _manejadorRegistrarUsuario: ManejadorRegistrarUsuario,
     private readonly _manejadorListarUsuario: ManejadorListarUsuario,
-  ) {}
+  ) { }
 
   @Get('listar')
   async listar(): Promise<UsuarioDto[]> {
