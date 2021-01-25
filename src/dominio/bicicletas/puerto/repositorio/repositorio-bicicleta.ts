@@ -6,6 +6,7 @@ import { Bicicleta } from '../../modelo/bicicleta';
  */
 export abstract class RepositorioBicicleta {
   abstract existeBicicleta(id: number): Promise<boolean>;
+  abstract obtenerValorHora(id: number): Promise<number>;
   abstract bicicletaHabilitada(id: number): Promise<boolean>;
   abstract actualizarEstado(id: number, estado: string): void;
   abstract guardar(bicicleta: Bicicleta): void;

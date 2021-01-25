@@ -7,19 +7,25 @@ import { BicicletaEntidad } from '../../entidad/bicicleta.entidad';
 
 @Injectable()
 export class RepositorioBicicletaMsql implements RepositorioBicicleta {
+
   constructor(
     @InjectRepository(BicicletaEntidad)
     private readonly repositorio: Repository<BicicletaEntidad>
-  ) {}
+  ) { }
 
 
   async existeBicicleta(id: number): Promise<boolean> {
     return (await this.repositorio.count({ id })) > 0;
   }
 
-  async bicicletaHabilitada (id:number): Promise<boolean> {
+  async obtenerValorHora(id: number): Promise<number> {
+    const bicicletaInfo = await this.repositorio.findOne({ id });
+    return (parseInt(bicicletaInfo.valorHora, 10));
+  }
+
+  async bicicletaHabilitada(id: number): Promise<boolean> {
     const estado = 'libre';
-    return (await this.repositorio.count({ where: {id, estado}})) > 0;
+    return (await this.repositorio.count({ where: { id, estado } })) > 0;
   }
 
   async actualizarEstado(id: number, estado: string) {

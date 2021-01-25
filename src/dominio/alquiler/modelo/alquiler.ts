@@ -23,12 +23,12 @@ export class Alquiler {
   }
 
   private validarCiudad(ciudad: string) {
-    if (!CIUDADES_DISPONIBLES.some((value) => value === ciudad)){
+    if (!CIUDADES_DISPONIBLES.some((value) => value === ciudad)) {
       throw new ErrorCiudadNoDisponible('Ciudad No Disponible por el momento');
     }
   }
 
-  private validarFecha(fecha: Date){
+  private validarFecha(fecha: Date) {
     const horaIn = 7;
     const horaOut = 22;
     const corteString = 2;

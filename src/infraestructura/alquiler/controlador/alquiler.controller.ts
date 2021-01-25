@@ -12,7 +12,7 @@ export class AlquilerControlador {
     private manejadorRegistrarAlquiler: ManejadorRegistrarAlquiler,
     private manejadorListarAlquiler: ManejadorListarAlquiler,
     private manejadorFacturarAlquiler: ManejadorFacturarAlquiler
-  ) {}
+  ) { }
 
   /**
    * Lista todos los alquileres
@@ -29,7 +29,7 @@ export class AlquilerControlador {
    * @returns: objeto tipo alquilerDto
    */
   @Get('listar/:id')
-  async buscarPorId(@Param('id') id:string): Promise<AlquilerDto> {
+  async buscarPorId(@Param('id') id: string): Promise<AlquilerDto> {
     return this.manejadorListarAlquiler.listarAlquiler(id);
   }
 
@@ -52,6 +52,10 @@ export class AlquilerControlador {
     await this.manejadorRegistrarAlquiler.ejecutar(comandoRegistrarAlquiler);
   }
 
+  /**
+   * Cerrar alquiler dando el valor total a facturar
+   * @param: comandoFacturarAlquiler
+   */
   @Put()
   async facturarAlquiler(@Body() comandoFacturarAlquiler: ComandoFacturarAlquiler) {
     await this.manejadorFacturarAlquiler.ejecutar(comandoFacturarAlquiler);

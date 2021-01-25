@@ -4,7 +4,7 @@ import { BicicletaDto } from './dto/bicicletas.dto';
 
 @Injectable()
 export class ManejadorListarBicicleta {
-  constructor( private daoBicicleta: DaoBicicleta ) {}
+  constructor(private daoBicicleta: DaoBicicleta) { }
 
   async listarBicicletas(): Promise<BicicletaDto[]> {
     return this.daoBicicleta.listar();

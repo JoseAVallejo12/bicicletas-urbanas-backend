@@ -7,7 +7,7 @@ import { ComandoRegistrarAlquiler } from './registrar-alquiler.comando';
 @Injectable()
 export class ManejadorRegistrarAlquiler {
 
-  constructor(private servicioRegistrarAlquiler: ServicioRegistraAlquiler) {}
+  constructor(private servicioRegistrarAlquiler: ServicioRegistraAlquiler) { }
 
   async ejecutar(comandoRegistrarAlquiler: ComandoRegistrarAlquiler) {
     await this.servicioRegistrarAlquiler.guardar(new Alquiler(comandoRegistrarAlquiler));

@@ -6,4 +6,4 @@ import { AlquilerProveedorModule } from './proveedor/alquiler-proveedor.module';
   imports: [AlquilerProveedorModule],
   controllers: [AlquilerControlador]
 })
-export class AlquilerModule {}
+export class AlquilerModule { }

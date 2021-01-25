@@ -3,20 +3,16 @@ import { HttpStatus, INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { createSandbox, SinonStubbedInstance } from 'sinon';
 import { ManejadorRegistrarBicicleta } from 'src/aplicacion/bicicletas/comando/registrar-bicicleta.manejador';
-import { BicicletaDto } from 'src/aplicacion/bicicletas/consulta/dto/bicicletas.dto';
 import { ManejadorListarBicicleta } from 'src/aplicacion/bicicletas/consulta/listar-bicicleta.manejador';
 import { DaoBicicleta } from 'src/dominio/bicicletas/puerto/dao/dao-bicicleta';
 import { RepositorioBicicleta } from 'src/dominio/bicicletas/puerto/repositorio/repositorio-bicicleta';
-import { ServicioActualizarBicicleta } from 'src/dominio/bicicletas/servicio/servicio-actualizar-bicicleta';
 import { ServicioRegistrarBicicleta } from 'src/dominio/bicicletas/servicio/servicio-registrar-bicicleta';
 import { BicicletaControlador } from 'src/infraestructura/bicicletas/controlador/bicicleta.controller';
 import {
-  servicioActualizarBicicletaProveedor,
   servicioRegistrarBicicletaProveedor } from 'src/infraestructura/bicicletas/proveedor/servicio/servicio-actualizar-bicicleta.proveedor';
 import { AppLogger } from 'src/infraestructura/configuracion/ceiba-logger.service';
 import { FiltroExcepcionesDeNegocio } from 'src/infraestructura/excepciones/filtro-excepciones-negocio';
 import { createStubObj } from 'test/util/create-object.stub';
-import { ManejadorActualizarBicicleta } from 'src/aplicacion/bicicletas/comando/actualizar-bicicleta.manejador';
 
 const sinonSandbox = createSandbox();
 
@@ -29,7 +25,10 @@ describe('Pruebas del controlador para bicicletas', () => {
 
   beforeAll(async () => {
     repositorioBicicleta = createStubObj<RepositorioBicicleta>([
-      'actualizar',
+      'existeBicicleta',
+      'obtenerValorHora',
+      'bicicletaHabilitada',
+      'actualizarEstado',
       'guardar'
     ], sinonSandbox);
     daoBicicleta = createStubObj<DaoBicicleta>([
@@ -41,11 +40,6 @@ describe('Pruebas del controlador para bicicletas', () => {
       providers: [
         AppLogger,
         {
-          provide: ServicioActualizarBicicleta,
-          inject: [RepositorioBicicleta],
-          useFactory: servicioActualizarBicicletaProveedor
-        },
-        {
           provide: ServicioRegistrarBicicleta,
           inject: [RepositorioBicicleta],
           useFactory: servicioRegistrarBicicletaProveedor
@@ -53,7 +47,6 @@ describe('Pruebas del controlador para bicicletas', () => {
         { provide: RepositorioBicicleta, useValue: repositorioBicicleta },
         { provide: DaoBicicleta, useValue: daoBicicleta },
         ManejadorRegistrarBicicleta,
-        ManejadorActualizarBicicleta,
         ManejadorListarBicicleta,
       ],
     }).compile();

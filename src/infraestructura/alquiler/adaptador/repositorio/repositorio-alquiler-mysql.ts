@@ -2,32 +2,46 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Alquiler } from 'src/dominio/alquiler/modelo/alquiler';
 import { Facturacion } from 'src/dominio/alquiler/modelo/facturar';
+import { AlquilerInfoDto } from 'src/dominio/alquiler/puerto/dto/alquilerInfo.dto';
 import { RepositorioAlquiler } from 'src/dominio/alquiler/puerto/repositorio/repositorio-alquiler';
 import { Repository } from 'typeorm';
 import { AlquilerEntidad } from '../../entidad/alquiler.entidad';
 
 @Injectable()
 export class RepositorioAlquilerMysql implements RepositorioAlquiler {
+
   constructor(
     @InjectRepository(AlquilerEntidad) private readonly repositorioAlquiler: Repository<AlquilerEntidad>,
-  ) {}
+  ) { }
 
 
-
-  async existeAlquiler(id: string): Promise<boolean> {
+  async existeAlquilerSinFacturar(id: string): Promise<boolean> {
     const alquilerId = parseInt(id, 10);
-    return (await this.repositorioAlquiler.count({ id: alquilerId })) > 0;
+    return (await this.repositorioAlquiler.count({ where: { id: alquilerId, estado: true } })) > 0;
   }
 
 
-  async actualizar(facturacion: Facturacion): Promise<void> {
-    const id = parseInt(facturacion.idAlquiler, 10);
+  async buscarAlquiler(alquilerId: string): Promise<AlquilerInfoDto> {
+    const id = parseInt(alquilerId, 10);
+
+    const alquiler = await this.repositorioAlquiler.findOne(id);
+    return {
+      cedulaUsuario: alquiler.cedulaUsuario,
+      idBicicleta: alquiler.idBicicleta,
+      fechaAlquiler: alquiler.fechaAlquiler
+    };
+  }
+
+
+  async actualizar(facturacion: Facturacion) {
+    const id = facturacion.idAlquiler;
     let registroAlquiler = await this.repositorioAlquiler.findOne(id);
     registroAlquiler.estado = false;
     registroAlquiler.fechaEntrega = facturacion.fechaEntrega;
     registroAlquiler.horasTranscurridas = facturacion.totalHoras;
     registroAlquiler.total = facturacion.total;
-    this.repositorioAlquiler.save(registroAlquiler);
+    registroAlquiler.valorHora = facturacion.valorHora;
+    await this.repositorioAlquiler.save(registroAlquiler);
   }
 
 

@@ -4,7 +4,7 @@ import { AlquilerDto } from './dto/alquiler.dto';
 
 @Injectable()
 export class ManejadorListarAlquiler {
-  constructor(private daoAlquiler: DaoAlquiler ) {}
+  constructor(private daoAlquiler: DaoAlquiler) { }
 
   async listarAlquileres(): Promise<AlquilerDto[]> {
     return this.daoAlquiler.listar();

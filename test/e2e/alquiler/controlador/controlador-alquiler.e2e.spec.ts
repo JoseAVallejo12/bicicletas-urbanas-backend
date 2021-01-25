@@ -5,7 +5,6 @@ import { FiltroExcepcionesDeNegocio } from 'src/infraestructura/excepciones/filt
 import { AppLogger } from 'src/infraestructura/configuracion/ceiba-logger.service';
 import { createStubObj } from '../../../util/create-object.stub';
 import { createSandbox, SinonStubbedInstance } from 'sinon';
-import { RepositorioAlquiler } from 'src/dominio/alquiler/puerto/repositorio/repositorio-alquiler';
 import { DaoAlquiler } from 'src/dominio/alquiler/puerto/dao/dao-alquiler';
 import { AlquilerControlador } from 'src/infraestructura/alquiler/controlador/alquiler.controller';
 import { ServicioRegistraAlquiler } from 'src/dominio/alquiler/servicio/servicio-registrar-alquiler';
@@ -16,7 +15,12 @@ import { ManejadorFacturarAlquiler } from 'src/aplicacion/alquiler/comando/factu
 import { ServicioFacturarAlquiler } from 'src/dominio/alquiler/servicio/servicio-facturar-alquiler';
 import { servicioFacturarAlquilerProveedor } from 'src/infraestructura/alquiler/proveedor/servicio/servicio-facturar-alquiler.proveedor';
 import { AlquilerDto } from 'src/aplicacion/alquiler/consulta/dto/alquiler.dto';
-import { FacturacionDto } from 'src/aplicacion/alquiler/consulta/dto/facturar.dto';
+import { FacturacionDto } from 'src/dominio/alquiler/puerto/dto/facturar.dto';
+import { RepositorioBicicleta } from 'src/dominio/bicicletas/puerto/repositorio/repositorio-bicicleta';
+import { RepositorioUsuario } from 'src/dominio/usuario/puerto/repositorio/repositorio-usuario';
+import { RepositorioAlquiler } from 'src/dominio/alquiler/puerto/repositorio/repositorio-alquiler';
+import { ComandoFacturarAlquiler } from 'src/aplicacion/alquiler/comando/facturar-alquiler.comando';
+
 
 /**
  * Un sandbox es util cuando el módulo de nest se configura una sola vez durante el ciclo completo de pruebas
@@ -27,6 +31,8 @@ describe('Pruebas al controlador de alquiler', () => {
 
   let app: INestApplication;
   let repositorioAlquiler: SinonStubbedInstance<RepositorioAlquiler>;
+  let repositorioBicicleta: SinonStubbedInstance<RepositorioBicicleta>;
+  let repositorioUsuario: SinonStubbedInstance<RepositorioUsuario>;
   let daoAlquiler: SinonStubbedInstance<DaoAlquiler>;
   let alquilerDto: AlquilerDto;
   let facturacionDto: FacturacionDto;
@@ -49,15 +55,25 @@ describe('Pruebas al controlador de alquiler', () => {
    **/
   beforeAll(async () => {
     repositorioAlquiler = createStubObj<RepositorioAlquiler>([
-      'existeAlquiler',
-      'existeBicicleta',
-      'existeUsuario',
-      'usuarioHabilitado',
-      'actualizarEstadoBicicleta',
-      'bicicletaLibre',
+      'existeAlquilerSinFacturar',
+      'buscarAlquiler',
       'actualizar',
       'guardar'
     ], sinonSandbox);
+    repositorioUsuario = createStubObj<RepositorioUsuario>([
+      'existeCedulaUsuario',
+      'usuarioHabilitado',
+      'actualizarEstado',
+      'guardar'
+    ], sinonSandbox);
+    repositorioBicicleta = createStubObj<RepositorioBicicleta>([
+      'existeBicicleta',
+      'obtenerValorHora',
+      'bicicletaHabilitada',
+      'actualizarEstado',
+      'guardar'
+    ], sinonSandbox);
+
     daoAlquiler = createStubObj<DaoAlquiler>(['listar'], sinonSandbox);
     const moduleRef = await Test.createTestingModule({
       controllers: [AlquilerControlador],
@@ -65,19 +81,21 @@ describe('Pruebas al controlador de alquiler', () => {
         AppLogger,
         {
           provide: ServicioRegistraAlquiler,
-          inject: [RepositorioAlquiler],
+          inject: [RepositorioAlquiler, RepositorioBicicleta, RepositorioUsuario],
           useFactory: servicioRegistrarAlquilerProveedor,
         },
         {
           provide: ServicioFacturarAlquiler,
-          inject: [RepositorioAlquiler],
+          inject: [RepositorioAlquiler, RepositorioBicicleta, RepositorioUsuario],
           useFactory: servicioFacturarAlquilerProveedor
         },
         { provide: RepositorioAlquiler, useValue: repositorioAlquiler },
+        { provide: RepositorioBicicleta, useValue: repositorioBicicleta },
+        { provide: RepositorioUsuario, useValue: repositorioUsuario },
         { provide: DaoAlquiler, useValue: daoAlquiler },
         ManejadorRegistrarAlquiler,
+        ManejadorFacturarAlquiler,
         ManejadorListarAlquiler,
-        ManejadorFacturarAlquiler
       ],
     }).compile();
 
@@ -97,12 +115,12 @@ describe('Pruebas al controlador de alquiler', () => {
       estado: true,
     };
     facturacionDto = {
-      idAlquiler: '42',
-	    valorHora: '2000',
-	    fechaInicio: '2021-01-17T05:00:00.000Z',
-	    fechaEntrega: '2021-01-17T06:00:00.000Z'
+      idAlquiler: 42,
+      valorHora: 2000,
+      fechaInicio: new Date('2021-01-17T05:00:00.000Z'),
+      fechaEntrega: new Date('2021-01-17T06:00:00.000Z')
     };
-    return {alquilerDto, facturacionDto};
+    return { alquilerDto, facturacionDto };
   });
 
   afterEach(() => {
@@ -113,7 +131,7 @@ describe('Pruebas al controlador de alquiler', () => {
     await app.close();
   });
 
-  it('debería listar los alquileres registrados', async () => {
+  it('Debería listar los alquileres registrados', async () => {
     const alquilers: any[] = [alquilerDataRecive];
     daoAlquiler.listar.returns(Promise.resolve(alquilers));
 
@@ -124,13 +142,17 @@ describe('Pruebas al controlador de alquiler', () => {
   });
 
 
-  it('deberia crear un nuevo alquiler', async () => {
+  it('Deberia crear un nuevo alquiler', async () => {
     alquilerDto.fechaAlquiler = new Date('2020-09-20 20:57:07').toISOString();
-    repositorioAlquiler.existeUsuario.returns(Promise.resolve(true));
-    repositorioAlquiler.existeBicicleta.returns(Promise.resolve(true));
-    repositorioAlquiler.usuarioHabilitado.returns(Promise.resolve(false));
-    repositorioAlquiler.bicicletaLibre.returns(Promise.resolve(true));
+    repositorioUsuario.existeCedulaUsuario.returns(Promise.resolve(true));
+    repositorioBicicleta.existeBicicleta.returns(Promise.resolve(true));
+    repositorioUsuario.usuarioHabilitado.returns(Promise.resolve(true));
+    repositorioBicicleta.bicicletaHabilitada.returns(Promise.resolve(true));
+
     repositorioAlquiler.guardar.returns();
+    repositorioBicicleta.actualizarEstado.returns();
+    repositorioUsuario.actualizarEstado.returns();
+
 
     return request(app.getHttpServer())
       .post('/alquiler')
@@ -139,25 +161,21 @@ describe('Pruebas al controlador de alquiler', () => {
   });
 
 
-  it('deberia fallar al alquilar fuera de horario', async () => {
-    alquilerDto.fechaAlquiler = new Date('2020-09-20 22:57:07').toISOString();
-    repositorioAlquiler.guardar.returns();
-
-    return request(app.getHttpServer())
-      .post('/alquiler')
-      .send(alquilerDto)
-      .expect(HttpStatus.BAD_REQUEST);
-  });
-
-
   it('deberia facturar un alquiler', async () => {
-    facturacionDto.fechaEntrega = new Date('2020-09-20 13:57:07').toISOString();
-    facturacionDto.fechaEntrega = new Date('2020-09-20 18:57:07').toISOString();
-    repositorioAlquiler.existeAlquiler.returns(Promise.resolve(true));
+    const factura: ComandoFacturarAlquiler = { idAlquiler: '1' };
+
+    repositorioAlquiler.existeAlquilerSinFacturar.returns(Promise.resolve(true));
+    repositorioAlquiler.buscarAlquiler.returns(Promise.resolve({
+      cedulaUsuario: 2343434,
+      idBicicleta: 2,
+      fechaAlquiler: new Date('2020-09-20 20:57:07')
+    }));
+
+    repositorioAlquiler.actualizar.returns();
 
     return request(app.getHttpServer())
       .put('/alquiler')
-      .send(facturacionDto)
+      .send(factura)
       .expect(HttpStatus.OK);
   });
 
