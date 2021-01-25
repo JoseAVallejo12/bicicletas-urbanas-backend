@@ -9,7 +9,7 @@ describe('Usuario', () => {
     const userData: UsuarioDto = {
       nombre: 'Carlos',
       apellido: 'Perez',
-      clave: '47il78',
+      estado: true,
       fechaCreacion: new Date().toISOString(),
       cedula: '39845645',
       correo: 'test@test.com.co',
@@ -19,7 +19,7 @@ describe('Usuario', () => {
 
     const usuario = new _Usuario(userData);
 
-    expect(usuario.nombre).toEqual('Carlos');
-    expect(usuario.clave).toEqual('47il78');
+    expect(usuario.nombre).toEqual(userData.nombre);
+    expect(usuario.cedula).toEqual(parseInt(userData.cedula));
   });
 });

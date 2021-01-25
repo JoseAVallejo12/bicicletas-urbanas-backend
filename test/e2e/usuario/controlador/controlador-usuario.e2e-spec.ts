@@ -27,7 +27,7 @@ describe('Pruebas al controlador de usuarios', () => {
   const userData = {
     nombre: 'Carlos',
     apellido: 'Perez',
-    clave: '47il78',
+    estado: true,
     fechaCreacion: new Date().toISOString(),
     cedula: '72300200',
     correo: 'test@test.com.co',

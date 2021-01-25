@@ -10,17 +10,28 @@ export class RepositorioUsuarioMysql implements RepositorioUsuario {
   constructor(
     @InjectRepository(UsuarioEntidad)
     private readonly repositorio: Repository<UsuarioEntidad>,
-  ) {}
+  ) { }
 
   async existeCedulaUsuario(cedula: number): Promise<boolean> {
     return (await this.repositorio.count({ cedula })) > 0;
+  }
+
+  async usuarioHabilitado(cedula: number): Promise<boolean> {
+    const estado = true;
+    return (await this.repositorio.count({ where: { cedula, estado } })) > 0;
+  }
+
+  async actualizarEstado(cedula: number, estado: boolean) {
+    const usuario = await this.repositorio.findOne({ cedula });
+    usuario.estado = estado;
+    await this.repositorio.save(usuario);
   }
 
   async guardar(usuario: Usuario) {
     const entidad = new UsuarioEntidad();
     entidad.nombre = usuario.nombre;
     entidad.apellido = usuario.apellido;
-    entidad.clave = usuario.clave;
+    entidad.estado = usuario.estado;
     entidad.fechaCreacion = usuario.fechaCreacion;
     entidad.cedula = usuario.cedula;
     entidad.correo = usuario.correo;

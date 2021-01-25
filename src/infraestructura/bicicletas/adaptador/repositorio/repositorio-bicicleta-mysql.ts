@@ -1,29 +1,37 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Bicicleta } from 'src/dominio/bicicletas/modelo/bicicleta';
+import { RepositorioBicicleta } from 'src/dominio/bicicletas/puerto/repositorio/repositorio-bicicleta';
 import { Repository } from 'typeorm';
 import { BicicletaEntidad } from '../../entidad/bicicleta.entidad';
 
 @Injectable()
-export class RepositorioBicicletaMsql {
+export class RepositorioBicicletaMsql implements RepositorioBicicleta {
+
   constructor(
     @InjectRepository(BicicletaEntidad)
     private readonly repositorio: Repository<BicicletaEntidad>
-  ) {}
+  ) { }
 
 
-  async existeIdBicicleta(id: string): Promise<boolean> {
-    const bicicletaId = parseInt(id, 10);
-    return (await this.repositorio.count({ id: bicicletaId })) > 0;
-
+  async existeBicicleta(id: number): Promise<boolean> {
+    return (await this.repositorio.count({ id })) > 0;
   }
 
-  async actualizar(estado: string, idBicicleta: string) {
-    const id = parseInt(idBicicleta, 10);
-    let registroBicicleta = await this.repositorio.findOne(id);
+  async obtenerValorHora(id: number): Promise<number> {
+    const bicicletaInfo = await this.repositorio.findOne({ id });
+    return (parseInt(bicicletaInfo.valorHora, 10));
+  }
+
+  async bicicletaHabilitada(id: number): Promise<boolean> {
+    const estado = 'libre';
+    return (await this.repositorio.count({ where: { id, estado } })) > 0;
+  }
+
+  async actualizarEstado(id: number, estado: string) {
+    let registroBicicleta = await this.repositorio.findOne({ id });
     registroBicicleta.estado = estado;
     this.repositorio.save(registroBicicleta);
-
   }
 
   async guardar(bicicleta: Bicicleta) {

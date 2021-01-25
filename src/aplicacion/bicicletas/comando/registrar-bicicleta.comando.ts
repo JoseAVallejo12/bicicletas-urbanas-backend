@@ -4,11 +4,11 @@ import { ApiProperty } from '@nestjs/swagger';
 export class ComandoRegistrarBicicleta {
 
   @IsString()
-  @ApiProperty({ example: 'Rogahn-Beier'})
+  @ApiProperty({ example: 'Rogahn-Beier' })
   marca: string;
 
   @IsString()
-  @ApiProperty({ example: 'NO66 5634 8327 343'})
+  @ApiProperty({ example: 'NO66 5634 8327 343' })
   serial: string;
 
   @IsString()
@@ -20,18 +20,18 @@ export class ComandoRegistrarBicicleta {
   almacenActual: string;
 
   @IsDateString()
-  @ApiProperty({ example: '2021-01-19T05:00:00.000Z'})
+  @ApiProperty({ example: '2021-01-19T05:00:00.000Z' })
   fechaCompra: string;
 
   @IsString()
-  @ApiProperty({ example: 'reservada'  })
+  @ApiProperty({ example: 'reservada' })
   estado: string;
 
   @IsNumber()
-  @ApiProperty({example: 5000 })
+  @ApiProperty({ example: 5000 })
   valorHora: number;
 
   @IsString()
-  @ApiProperty({example: 'Voluptate sunt molestiae corporis consequatur sequi adipisci vel provident voluptatum.' })
+  @ApiProperty({ example: 'Voluptate sunt molestiae corporis consequatur sequi adipisci vel provident voluptatum.' })
   descripcion: string;
 }

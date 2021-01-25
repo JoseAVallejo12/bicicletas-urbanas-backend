@@ -26,7 +26,7 @@ export class Bicicleta {
   private validarValorHora(valor: number) {
     const minimoValor = 1000;
     let mensaje = `Valor Hora: ${valor} debe ser superior a ${minimoValor} COP`;
-    if (valor <= minimoValor ) {
+    if (valor <= minimoValor) {
       throw new ErrorValorHoraInvalido(mensaje);
     }
   }

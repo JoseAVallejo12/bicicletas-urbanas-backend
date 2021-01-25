@@ -16,7 +16,7 @@ describe('Alquiler', () => {
     return alquilerData;
   });
 
-  it('crear un nuevo alquiler', () => {
+  it('Deberia crear un nuevo alquiler', () => {
     const alquiler = new _alquiler(alquilerData);
     const corteString = 8;
     expect(alquiler.ciudad).toEqual('barranquilla');
@@ -25,7 +25,7 @@ describe('Alquiler', () => {
     expect(alquiler.cedulaUsuario).toBe(parseInt(alquilerData.cedulaUsuario, 10));
   });
 
-  it('Crear alquiler ciudad no habiliatda', () => {
+  it('Deberia fallar al crear un alquiler en ciudad no habilitada', () => {
     alquilerData.ciudad = 'cali';
     alquilerData.fechaAlquiler = '2020-09-20 20:57:07';
     expect(() => {
@@ -33,7 +33,7 @@ describe('Alquiler', () => {
     }).toThrowError();
   });
 
-  it('Crear alquiler fuera de horario 07 to 22h', ()=> {
+  it('Deberia fallar al crear alquiler fuera de horario 07 to 22h', ()=> {
     alquilerData.fechaAlquiler = '2020-09-20 06:59:07';
     expect(()=>{
       return new _alquiler(alquilerData);

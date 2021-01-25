@@ -24,6 +24,9 @@ export class AlquilerEntidad {
   fechaEntrega: Date;
 
   @Column()
+  valorHora: number;
+
+  @Column()
   horasTranscurridas: number;
 
   @Column()

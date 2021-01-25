@@ -9,8 +9,7 @@ export class DaoBicicletaMysql implements DaoBicicleta {
   #sqlConsulta: string;
 
   constructor(
-    @InjectEntityManager() private readonly entityManager: EntityManager
-  ) {
+    @InjectEntityManager() private readonly entityManager: EntityManager) {
     this.#sqlConsulta = '';
   }
 

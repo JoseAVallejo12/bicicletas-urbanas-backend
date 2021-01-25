@@ -2,66 +2,46 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Alquiler } from 'src/dominio/alquiler/modelo/alquiler';
 import { Facturacion } from 'src/dominio/alquiler/modelo/facturar';
+import { AlquilerInfoDto } from 'src/dominio/alquiler/puerto/dto/alquilerInfo.dto';
 import { RepositorioAlquiler } from 'src/dominio/alquiler/puerto/repositorio/repositorio-alquiler';
-import { BicicletaEntidad } from 'src/infraestructura/bicicletas/entidad/bicicleta.entidad';
-import { UsuarioEntidad } from 'src/infraestructura/usuario/entidad/usuario.entidad';
 import { Repository } from 'typeorm';
 import { AlquilerEntidad } from '../../entidad/alquiler.entidad';
 
 @Injectable()
 export class RepositorioAlquilerMysql implements RepositorioAlquiler {
+
   constructor(
     @InjectRepository(AlquilerEntidad) private readonly repositorioAlquiler: Repository<AlquilerEntidad>,
-    @InjectRepository(UsuarioEntidad) private readonly repositorioUsuario: Repository<UsuarioEntidad>,
-    @InjectRepository(BicicletaEntidad) private readonly repoBicicleta: Repository<BicicletaEntidad>
-  ) {}
+  ) { }
 
 
-  async existeUsuario(cedulaUsuario: string): Promise<boolean> {
-    const cedula = parseInt(cedulaUsuario, 10);
-    return (await this.repositorioUsuario.count({ cedula })) > 0;
-  }
-
-
-  async existeBicicleta(id: string): Promise<boolean> {
+  async existeAlquilerSinFacturar(id: string): Promise<boolean> {
     const alquilerId = parseInt(id, 10);
-    return (await this.repoBicicleta.count({ id: alquilerId })) > 0;
+    return (await this.repositorioAlquiler.count({ where: { id: alquilerId, estado: true } })) > 0;
   }
 
 
-  async existeAlquiler(id: string): Promise<boolean> {
-    const alquilerId = parseInt(id, 10);
-    return (await this.repositorioAlquiler.count({ id: alquilerId })) > 0;
+  async buscarAlquiler(alquilerId: string): Promise<AlquilerInfoDto> {
+    const id = parseInt(alquilerId, 10);
+
+    const alquiler = await this.repositorioAlquiler.findOne(id);
+    return {
+      cedulaUsuario: alquiler.cedulaUsuario,
+      idBicicleta: alquiler.idBicicleta,
+      fechaAlquiler: alquiler.fechaAlquiler
+    };
   }
 
 
-  async usuarioHabilitado(cedulaUsuario: string): Promise<boolean> {
-    const cedula = parseInt(cedulaUsuario, 10);
-    return await this.repositorioAlquiler.count({ where: {cedulaUsuario: cedula, estado: true }}) > 0;
-  }
-
-
-  async bicicletaLibre(id: string): Promise<boolean> {
-    const bicicletaId = parseInt(id, 10);
-    return await this.repoBicicleta.count({ where: {id: bicicletaId, estado: 'libre' }}) > 0;
-  }
-
-
-  async actualizarEstadoBicicleta(id: string) {
-    const bicicletaId = parseInt(id, 10);
-    let registroBicicleta = await this.repoBicicleta.findOne({id: bicicletaId});
-    registroBicicleta.estado = 'alquilada';
-    this.repoBicicleta.save(registroBicicleta);
-  }
-
-  async actualizar(facturacion: Facturacion): Promise<void> {
-    const id = parseInt(facturacion.idAlquiler, 10);
+  async actualizar(facturacion: Facturacion) {
+    const id = facturacion.idAlquiler;
     let registroAlquiler = await this.repositorioAlquiler.findOne(id);
     registroAlquiler.estado = false;
     registroAlquiler.fechaEntrega = facturacion.fechaEntrega;
     registroAlquiler.horasTranscurridas = facturacion.totalHoras;
     registroAlquiler.total = facturacion.total;
-    this.repositorioAlquiler.save(registroAlquiler);
+    registroAlquiler.valorHora = facturacion.valorHora;
+    await this.repositorioAlquiler.save(registroAlquiler);
   }
 
 

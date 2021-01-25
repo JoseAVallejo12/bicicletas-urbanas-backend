@@ -9,7 +9,7 @@ export class DaoUsuarioMysql implements DaoUsuario {
   constructor(
     @InjectEntityManager()
     private readonly entityManager: EntityManager,
-  ) {}
+  ) { }
 
   /**
    * Lista todos los usuarios en Db

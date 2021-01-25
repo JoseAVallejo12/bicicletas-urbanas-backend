@@ -6,9 +6,9 @@ import { ComandoRegistrarBicicleta } from './registrar-bicicleta.comando';
 @Injectable()
 export class ManejadorRegistrarBicicleta {
 
-  constructor(private servicioRegistrarBicicleta: ServicioRegistrarBicicleta) {}
+  constructor(private servicioRegistrarBicicleta: ServicioRegistrarBicicleta) { }
 
-  async ejecutar(comandoRegistrarBicicleta: ComandoRegistrarBicicleta ) {
+  async ejecutar(comandoRegistrarBicicleta: ComandoRegistrarBicicleta) {
     await this.servicioRegistrarBicicleta.ejecutar(new Bicicleta(comandoRegistrarBicicleta));
   }
 }
